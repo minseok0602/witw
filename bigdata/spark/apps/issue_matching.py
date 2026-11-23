@@ -4,6 +4,7 @@ import json
 import math
 from dataclasses import dataclass
 from typing import Any, Iterable
+from event_identity import event_id
 
 
 ARTICLE_ISSUE_ASSIGNED = "ARTICLE_ISSUE_ASSIGNED"
@@ -124,6 +125,7 @@ def build_issue_result(
                 "similarity": match.similarity,
             },
         }
+        event["event_id"] = event_id(event["event_type"], event["payload"])
         return (
             event_topic,
             article["article_id"],

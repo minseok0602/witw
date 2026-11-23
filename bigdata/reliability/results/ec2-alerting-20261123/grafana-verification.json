@@ -1,0 +1,116 @@
+{
+  "captured_at_utc": "2026-11-23T11:48:19.604470+00:00",
+  "run_id": "witw-rel-20261123-105044-35b97a",
+  "scope": "Grafana HTTP API, production alert rules, real lab HTTP receiver; no external channel",
+  "dashboard_uid": "witw-pipeline-reliability",
+  "datasource_health": {
+    "prometheus-bigdata": {
+      "details": {
+        "application": "Prometheus",
+        "features": {
+          "rulerApiEnabled": false
+        }
+      },
+      "message": "Successfully queried the Prometheus API.",
+      "status": "OK"
+    },
+    "alertmanager-bigdata": {
+      "status": "OK",
+      "check": "Grafana proxy: /api/v2/status and /api/v2/alerts",
+      "version": "0.28.1"
+    }
+  },
+  "queries": [
+    {
+      "panel_id": 1,
+      "query": "up{job=~\"collector|backend-pipeline|kafka-offsets|spark-streaming|alertmanager\"}",
+      "series_count": 6
+    },
+    {
+      "panel_id": 2,
+      "query": "ALERTS",
+      "series_count": 1
+    },
+    {
+      "panel_id": 3,
+      "query": "witw_collector_outbox_pending",
+      "series_count": 1
+    },
+    {
+      "panel_id": 4,
+      "query": "witw_collector_outbox_oldest_age_seconds",
+      "series_count": 1
+    },
+    {
+      "panel_id": 5,
+      "query": "witw_dbwriter_pending_events",
+      "series_count": 2
+    },
+    {
+      "panel_id": 6,
+      "query": "witw_dbwriter_pending_oldest_age_seconds",
+      "series_count": 2
+    },
+    {
+      "panel_id": 7,
+      "query": "sum by (consumergroup, topic) (kafka_consumergroup_lag{consumergroup=~\"nlp-worker-v1|db-writer-.*\"})",
+      "series_count": 3
+    },
+    {
+      "panel_id": 8,
+      "query": "histogram_quantile(0.95, sum by (le, instance) (rate(witw_dbwriter_article_delivery_seconds_bucket[10m])))",
+      "series_count": 2
+    },
+    {
+      "panel_id": 9,
+      "query": "{__name__=~\"witw_collector_delivery_(acknowledged|failures)_total\"}",
+      "series_count": 2
+    },
+    {
+      "panel_id": 10,
+      "query": "sum by (outcome, instance) (rate(witw_dbwriter_events_total[5m]))",
+      "series_count": 3
+    },
+    {
+      "panel_id": 11,
+      "query": "sum by (integration) (increase(alertmanager_notifications_total{integration=\"webhook\"}[10m]))",
+      "series_count": 1
+    },
+    {
+      "panel_id": 12,
+      "query": "sum by (integration) (increase(alertmanager_notifications_failed_total{integration=\"webhook\"}[10m]))",
+      "series_count": 1
+    }
+  ],
+  "prometheus_rule_groups": 2,
+  "current_alerts": [
+    {
+      "labels": {
+        "alertname": "DbWriterDeadLettersPresent",
+        "severity": "critical"
+      },
+      "annotations": {
+        "description": "DLT retains 300 records. Confirm DB application before replay; retention alone is not a recovery acknowledgement.",
+        "summary": "DB Writer dead-letter records require investigation"
+      },
+      "state": "firing",
+      "activeAt": "2026-11-23T11:39:46.040490292Z",
+      "value": "3e+02"
+    }
+  ],
+  "collector_delivery_notifications": [
+    {
+      "received_epoch_ns": 1795434181060295292,
+      "status": "firing",
+      "startsAt": "2026-11-23T11:42:31.04Z",
+      "endsAt": "0001-01-01T00:00:00Z"
+    },
+    {
+      "received_epoch_ns": 1795434481060851191,
+      "status": "resolved",
+      "startsAt": "2026-11-23T11:42:31.04Z",
+      "endsAt": "2026-11-23T11:45:31.04Z"
+    }
+  ],
+  "image_id": "sha256:f772d434e8fab0049deb2b1b30abd43342bcfca1537614aa8d36080232cf4283"
+}

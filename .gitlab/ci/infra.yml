@@ -36,7 +36,7 @@ deploy-monitoring-prod:
     - docker compose --env-file "$MONITORING_ENV_FILE" -p "$MONITORING_COMPOSE_PROJECT" run --rm --no-deps loki -config.file=/etc/loki/config.yml -verify-config=true
     - docker compose --env-file "$MONITORING_ENV_FILE" -p "$MONITORING_COMPOSE_PROJECT" up -d --wait --wait-timeout 180
     # bind mount 설정 변경을 실행 중인 프로세스에도 반영한다.
-    - docker compose --env-file "$MONITORING_ENV_FILE" -p "$MONITORING_COMPOSE_PROJECT" restart prometheus alloy
+    - docker compose --env-file "$MONITORING_ENV_FILE" -p "$MONITORING_COMPOSE_PROJECT" restart prometheus alloy grafana
     - docker compose --env-file "$MONITORING_ENV_FILE" -p "$MONITORING_COMPOSE_PROJECT" ps
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "master"'

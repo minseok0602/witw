@@ -1,0 +1,17 @@
+{
+  "baseline_commit": "9744533d2056f92fedca6798267d6a04aa5ab08f",
+  "files": {
+    "backend/src/main/java/com/ssafy/witw/infra/kafka/dbwriter/DbWriterKafkaConsumer.java": {
+      "before_sha256": "26972d160eeb4cd8d839d6ba510f7db00c93997568168f767a4ff717e9377c15",
+      "after_sha256": "090b6236fe193a8062f40443b8c65d86170489e563b607b50b19de8b60755424"
+    },
+    "backend/src/main/java/com/ssafy/witw/infra/kafka/dbwriter/DbWriterService.java": {
+      "before_sha256": "f2c035265c9e2f4b8114d04d74e68b6c7fb779c162f47a7c1e7130523f447225",
+      "after_sha256": "0f68921ca70041a566cc35ee111aae6db5cd6dd526575a01c0b4216915d05cfb"
+    },
+    "bigdata/collector/collection_kafka_producer_v2.py": {
+      "before_sha256": "b7dca48cef57ec2f3d9165844f93478db2491a59aabd580974d3f13045929c55",
+      "after_sha256": "6f6cf5f2c351bd578faded112ae1780c2649969a263e3dd7e23fcb1471fd7389"
+    }
+  }
+}

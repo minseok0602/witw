@@ -1,0 +1,5 @@
+{
+  "phase": "protocol-v2-pilot",
+  "include_in_formal_aggregate": false,
+  "reason": "Formal protocol adds exact event_id filtering to debugger failpoints and stops orphaned pilot input worker. Raw results retained."
+}

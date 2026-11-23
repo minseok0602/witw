@@ -1,0 +1,265 @@
+{
+  "captured_at_utc": "2026-11-23T07:26:56.269139+00:00",
+  "docker": {
+    "ServerVersion": "29.6.1",
+    "OperatingSystem": "Docker Desktop",
+    "OSType": "linux",
+    "Architecture": "x86_64",
+    "NCPU": 22,
+    "MemTotal": 16506847232,
+    "KernelVersion": "6.18.33.2-microsoft-standard-WSL2",
+    "Driver": "overlayfs"
+  },
+  "services": {
+    "collector-case": {
+      "image": "codex-pipeline-collector:verify",
+      "image_id": "sha256:e1c0cdc51fab5b68fc57dd77a4871a45022f7aa9340f467e0ffc91a45bc3cba2",
+      "cpu_limit": 1.0,
+      "memory_limit_bytes": 536870912,
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    "nlp-replay": {
+      "image": "codex-pipeline-collector:verify",
+      "image_id": "sha256:e1c0cdc51fab5b68fc57dd77a4871a45022f7aa9340f467e0ffc91a45bc3cba2",
+      "cpu_limit": 1.0,
+      "memory_limit_bytes": 536870912,
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    "spark": {
+      "image": "witw-reliability-spark:verify",
+      "image_id": "sha256:d07ad1dd2d2fc03ba0e6beeec166e88e16bcf202921d388204afebfb4296137a",
+      "cpu_limit": 2.0,
+      "memory_limit_bytes": 3221225472,
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    "backend-before": {
+      "image": "witw-reliability-backend:before",
+      "image_id": "sha256:cd0eb86299097f22b5fc7446a236ca965f7519b4be13f7ac905f82d0b572bc25",
+      "cpu_limit": 2.0,
+      "memory_limit_bytes": 1610612736,
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    "backend-after": {
+      "image": "witw-reliability-backend:after",
+      "image_id": "sha256:1231084c2b18b609209d733de8204f4d9b0bb8d670ebed763726da30af67deae",
+      "cpu_limit": 2.0,
+      "memory_limit_bytes": 1610612736,
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    "collector-long": {
+      "image": "codex-pipeline-collector:verify",
+      "image_id": "sha256:e1c0cdc51fab5b68fc57dd77a4871a45022f7aa9340f467e0ffc91a45bc3cba2",
+      "cpu_limit": 1.0,
+      "memory_limit_bytes": 536870912,
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    "kafka": {
+      "image": "apache/kafka:4.3.1",
+      "image_id": "sha256:77e3df9054047a88b520d0cc46e16696d3b22022e1d580aeccd2632df6532837",
+      "cpu_limit": 2.0,
+      "memory_limit_bytes": 1610612736,
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    "prometheus": {
+      "image": "prom/prometheus:v3.13.1",
+      "image_id": "sha256:3c42b892cf723fa54d2f262c37a0e1f80aa8c8ddb1da7b9b0df9455a35a7f893",
+      "cpu_limit": 0.5,
+      "memory_limit_bytes": 536870912,
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    "receiver": {
+      "image": "codex-pipeline-collector:verify",
+      "image_id": "sha256:e1c0cdc51fab5b68fc57dd77a4871a45022f7aa9340f467e0ffc91a45bc3cba2",
+      "cpu_limit": 0.5,
+      "memory_limit_bytes": 134217728,
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    "postgres": {
+      "image": "postgres:17-alpine",
+      "image_id": "sha256:18cfe3ef5e6815560c98237d6216d1e5119702fb0f3894c8785dd58b8bbe5d73",
+      "cpu_limit": 2.0,
+      "memory_limit_bytes": 1073741824,
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    "alertmanager": {
+      "image": "prom/alertmanager:v0.28.1",
+      "image_id": "sha256:27c475db5fb156cab31d5c18a4251ac7ed567746a2483ff264516437a39b15ba",
+      "cpu_limit": 0.25,
+      "memory_limit_bytes": 134217728,
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    "toxiproxy": {
+      "image": "ghcr.io/shopify/toxiproxy:2.12.0",
+      "image_id": "sha256:9378ed52a28bc50edc1350f936f518f31fa95f0d15917d6eb40b8e376d1a214e",
+      "cpu_limit": 0.5,
+      "memory_limit_bytes": 134217728,
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    "kafka-exporter": {
+      "image": "danielqsj/kafka-exporter:v1.9.0",
+      "image_id": "sha256:4150e46b2e9697ac30e4be8de03ec1704b4bdc7037577b83b8d35a32be298c16",
+      "cpu_limit": 0.5,
+      "memory_limit_bytes": 268435456,
+      "oom_killed": false,
+      "restart_count": 0
+    },
+    "redis": {
+      "image": "redis:7-alpine",
+      "image_id": "sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe",
+      "cpu_limit": 0.5,
+      "memory_limit_bytes": 268435456,
+      "oom_killed": false,
+      "restart_count": 0
+    }
+  },
+  "images": {
+    "sha256:e1c0cdc51fab5b68fc57dd77a4871a45022f7aa9340f467e0ffc91a45bc3cba2": {
+      "RepoTags": [
+        "codex-pipeline-collector:verify"
+      ],
+      "RepoDigests": [
+        "codex-pipeline-collector@sha256:e1c0cdc51fab5b68fc57dd77a4871a45022f7aa9340f467e0ffc91a45bc3cba2"
+      ],
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Created": "2026-11-23T05:42:05.718332939Z"
+    },
+    "sha256:d07ad1dd2d2fc03ba0e6beeec166e88e16bcf202921d388204afebfb4296137a": {
+      "RepoTags": [
+        "witw-reliability-spark:verify"
+      ],
+      "RepoDigests": [
+        "witw-reliability-spark@sha256:d07ad1dd2d2fc03ba0e6beeec166e88e16bcf202921d388204afebfb4296137a"
+      ],
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Created": "2026-11-23T06:24:23.113215206Z"
+    },
+    "sha256:cd0eb86299097f22b5fc7446a236ca965f7519b4be13f7ac905f82d0b572bc25": {
+      "RepoTags": [
+        "witw-reliability-backend:before"
+      ],
+      "RepoDigests": [
+        "witw-reliability-backend@sha256:cd0eb86299097f22b5fc7446a236ca965f7519b4be13f7ac905f82d0b572bc25"
+      ],
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Created": "2026-11-23T06:18:27.303650925Z"
+    },
+    "sha256:1231084c2b18b609209d733de8204f4d9b0bb8d670ebed763726da30af67deae": {
+      "RepoTags": [
+        "witw-reliability-backend:after"
+      ],
+      "RepoDigests": [
+        "witw-reliability-backend@sha256:1231084c2b18b609209d733de8204f4d9b0bb8d670ebed763726da30af67deae"
+      ],
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Created": "2026-11-23T06:15:19.002793028Z"
+    },
+    "sha256:77e3df9054047a88b520d0cc46e16696d3b22022e1d580aeccd2632df6532837": {
+      "RepoTags": [
+        "apache/kafka:4.3.1"
+      ],
+      "RepoDigests": [
+        "apache/kafka@sha256:77e3df9054047a88b520d0cc46e16696d3b22022e1d580aeccd2632df6532837"
+      ],
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Created": "2026-06-17T19:23:59.184853077Z"
+    },
+    "sha256:3c42b892cf723fa54d2f262c37a0e1f80aa8c8ddb1da7b9b0df9455a35a7f893": {
+      "RepoTags": [
+        "prom/prometheus:v3.13.1"
+      ],
+      "RepoDigests": [
+        "prom/prometheus@sha256:3c42b892cf723fa54d2f262c37a0e1f80aa8c8ddb1da7b9b0df9455a35a7f893"
+      ],
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Created": "2026-07-10T08:49:03.827956727Z"
+    },
+    "sha256:18cfe3ef5e6815560c98237d6216d1e5119702fb0f3894c8785dd58b8bbe5d73": {
+      "RepoTags": [
+        "postgres:17-alpine"
+      ],
+      "RepoDigests": [
+        "postgres@sha256:18cfe3ef5e6815560c98237d6216d1e5119702fb0f3894c8785dd58b8bbe5d73"
+      ],
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Created": "2026-08-13T19:17:35.122910679Z"
+    },
+    "sha256:27c475db5fb156cab31d5c18a4251ac7ed567746a2483ff264516437a39b15ba": {
+      "RepoTags": [
+        "prom/alertmanager:v0.28.1"
+      ],
+      "RepoDigests": [
+        "prom/alertmanager@sha256:27c475db5fb156cab31d5c18a4251ac7ed567746a2483ff264516437a39b15ba"
+      ],
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Created": "2025-03-07T15:10:29.369534419Z"
+    },
+    "sha256:9378ed52a28bc50edc1350f936f518f31fa95f0d15917d6eb40b8e376d1a214e": {
+      "RepoTags": [
+        "ghcr.io/shopify/toxiproxy:2.12.0"
+      ],
+      "RepoDigests": [
+        "ghcr.io/shopify/toxiproxy@sha256:9378ed52a28bc50edc1350f936f518f31fa95f0d15917d6eb40b8e376d1a214e"
+      ],
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Created": "2025-03-18T13:12:13.176393585Z"
+    },
+    "sha256:4150e46b2e9697ac30e4be8de03ec1704b4bdc7037577b83b8d35a32be298c16": {
+      "RepoTags": [
+        "danielqsj/kafka-exporter:v1.9.0"
+      ],
+      "RepoDigests": [
+        "danielqsj/kafka-exporter@sha256:4150e46b2e9697ac30e4be8de03ec1704b4bdc7037577b83b8d35a32be298c16"
+      ],
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Created": "2025-02-17T03:12:01.5836382Z"
+    },
+    "sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe": {
+      "RepoTags": [
+        "redis:7-alpine"
+      ],
+      "RepoDigests": [
+        "redis@sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe"
+      ],
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Created": "2026-11-09T20:09:32.419853068Z"
+    }
+  },
+  "host_python": "3.13.13 | packaged by conda-forge | (main, Apr  8 2026, 01:56:49) [MSC v.1944 64 bit (AMD64)]",
+  "host_python_packages": {
+    "confluent-kafka": "2.15.0",
+    "psycopg": "3.3.9",
+    "requests": "2.34.2"
+  },
+  "host_hardware": {
+    "cpu": {
+      "Name": "Intel(R) Core(TM) Ultra 7 155H",
+      "NumberOfCores": 16,
+      "NumberOfLogicalProcessors": 22
+    },
+    "ram_bytes": 33837957120
+  },
+  "postgresql_version": "PostgreSQL 17.11 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit"
+}

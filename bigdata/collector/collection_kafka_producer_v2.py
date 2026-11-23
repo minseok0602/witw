@@ -431,6 +431,9 @@ class KafkaRawProducer:
         self.failed_path = failed_path
         self._delivered = 0
         self._failed = 0
+        self._reported_delivered = 0
+        self._reported_failed = 0
+        self._inflight = set()
         self.producer = Producer({
             "bootstrap.servers": bootstrap_servers,
             "client.id": "news-collector",
@@ -460,17 +463,27 @@ class KafkaRawProducer:
             }
         self._write_failed(event, str(err))
 
-    def publish(self, event):
+    def publish(self, event, on_delivery=None):
         """Queue one event. Kafka key is article_id."""
         payload = json.dumps(event, ensure_ascii=False, separators=(",", ":"))
         article_id = event["article_id"]
+        if article_id in self._inflight:
+            return False
+
+        def delivered(error, message):
+            self._inflight.discard(article_id)
+            if on_delivery is not None:
+                on_delivery(error)
+            self._delivery_callback(error, message)
+
+        self._inflight.add(article_id)
 
         try:
             self.producer.produce(
                 self.topic,
                 key=article_id,
                 value=payload,
-                callback=self._delivery_callback,
+                callback=delivered,
             )
             # Serve delivery callbacks and free local producer queue space.
             self.producer.poll(0)
@@ -483,29 +496,36 @@ class KafkaRawProducer:
                     self.topic,
                     key=article_id,
                     value=payload,
-                    callback=self._delivery_callback,
+                    callback=delivered,
                 )
                 self.producer.poll(0)
                 return True
             except Exception as e:
+                self._inflight.discard(article_id)
+                if on_delivery is not None:
+                    on_delivery(e)
                 self._failed += 1
                 self._write_failed(event, f"{type(e).__name__}: {e}")
                 return False
         except Exception as e:
+            self._inflight.discard(article_id)
+            if on_delivery is not None:
+                on_delivery(e)
             self._failed += 1
             self._write_failed(event, f"{type(e).__name__}: {e}")
             return False
 
     def flush_round(self):
         """Wait for this round's queued records to be acknowledged by Kafka."""
-        delivered_before = self._delivered
-        failed_before = self._failed
         remaining = self.producer.flush(30)
-        return {
-            "delivered": self._delivered - delivered_before,
-            "failed": self._failed - failed_before,
+        stats = {
+            "delivered": self._delivered - self._reported_delivered,
+            "failed": self._failed - self._reported_failed,
             "remaining": remaining,
         }
+        self._reported_delivered = self._delivered
+        self._reported_failed = self._failed
+        return stats
 
     def close(self):
         self.producer.flush(30)
@@ -514,6 +534,27 @@ class KafkaRawProducer:
         row = {"error": error, "event": event, "failed_at": iso(utc_now())}
         with self.failed_path.open("a", encoding="utf-8") as f:
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+def deliver_outbox(db, producer):
+    """Retry durable payloads, including rounds without newly discovered articles."""
+    total = {"queued": 0, "delivered": 0, "failed": 0, "remaining": 0}
+    had_batch = False
+    for batch in db.outbox_batches():
+        had_batch = True
+        for normalized_url, event_json in batch:
+            callback = lambda error, url=normalized_url: db.record_delivery(url, error)
+            if producer.publish(json.loads(event_json), on_delivery=callback):
+                total["queued"] += 1
+        stats = producer.flush_round()
+        for name in ("delivered", "failed"):
+            total[name] += stats[name]
+        total["remaining"] = stats["remaining"]
+        if stats["remaining"] or (stats["failed"] and not stats["delivered"]):
+            break
+    if not had_batch:
+        total.update(producer.flush_round())
+    return total
+
 
 def get_session():
     s = getattr(THREAD_LOCAL, "session", None)
@@ -665,6 +706,20 @@ CREATE TABLE IF NOT EXISTS pending_articles (
 );
 CREATE INDEX IF NOT EXISTS idx_pending_articles_source
 ON pending_articles(source_id, queued_at);
+
+-- Fetched bodies survive broker outages and are never pruned with discovery work.
+CREATE TABLE IF NOT EXISTS kafka_outbox (
+    normalized_url TEXT PRIMARY KEY,
+    event_json TEXT NOT NULL,
+    queued_at TEXT NOT NULL,
+    last_error TEXT
+);
+CREATE TABLE IF NOT EXISTS kafka_delivery_stats (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    acknowledged INTEGER NOT NULL DEFAULT 0,
+    failures INTEGER NOT NULL DEFAULT 0
+);
+INSERT OR IGNORE INTO kafka_delivery_stats(id) VALUES (1);
 
 CREATE TABLE IF NOT EXISTS source_poll_health (
     source_id TEXT PRIMARY KEY,
@@ -1329,6 +1384,7 @@ class DB:
         daily_limit,
         country_daily_limit=0,
         country_source_daily_limit=0,
+        delivery_event=None,
     ):
         digest = title_hash(title)
         body_digest = body_prefix_hash(body)
@@ -1407,11 +1463,83 @@ class DB:
                     "INSERT INTO country_daily_accepts VALUES (?, ?, ?, ?)",
                     (article.normalized_url, article.country, article.source_id, accepted_day),
                 )
+                if delivery_event is not None:
+                    self.conn.execute(
+                        "INSERT INTO kafka_outbox VALUES (?, ?, ?, NULL)",
+                        (article.normalized_url, json.dumps(delivery_event, ensure_ascii=False,
+                         allow_nan=False), accepted_at),
+                    )
+                    self.conn.execute(
+                        "DELETE FROM pending_articles WHERE normalized_url=?",
+                        (article.normalized_url,),
+                    )
                 self.conn.commit()
                 return True, ""
             except sqlite3.IntegrityError:
                 self.conn.rollback()
                 return False, "QUALITY_RESERVATION_DUPLICATE"
+            except Exception:
+                self.conn.rollback()
+                raise
+
+    def outbox_events(self, limit=500):
+        with self.lock:
+            return self.conn.execute(
+                "SELECT normalized_url, event_json FROM kafka_outbox "
+                "ORDER BY queued_at, normalized_url LIMIT ?", (limit,),
+            ).fetchall()
+
+    def outbox_batches(self):
+        # Bound memory, without limiting successful delivery to 500 per round.
+        with self.lock:
+            through = self.conn.execute("SELECT COALESCE(MAX(rowid), 0) FROM kafka_outbox").fetchone()[0]
+        after = 0
+        while after < through:
+            with self.lock:
+                rows = self.conn.execute(
+                    "SELECT rowid, normalized_url, event_json FROM kafka_outbox "
+                    "WHERE rowid > ? AND rowid <= ? ORDER BY rowid LIMIT 500", (after, through),
+                ).fetchall()
+            if not rows:
+                return
+            after = rows[-1][0]
+            yield [(url, event) for _, url, event in rows]
+
+    def record_delivery(self, normalized_url, error):
+        with self.lock, self.conn:
+            if error is None:
+                removed = self.conn.execute(
+                    "DELETE FROM kafka_outbox WHERE normalized_url=?", (normalized_url,),
+                ).rowcount
+                self.conn.execute(
+                    "UPDATE kafka_delivery_stats SET acknowledged=acknowledged+? WHERE id=1",
+                    (removed,),
+                )
+            else:
+                self.conn.execute(
+                    "UPDATE kafka_outbox SET last_error=? WHERE normalized_url=?",
+                    (str(error)[:2000], normalized_url),
+                )
+                self.conn.execute("UPDATE kafka_delivery_stats SET failures=failures+1 WHERE id=1")
+
+    def delivery_snapshot(self):
+        with self.lock:
+            count, oldest = self.conn.execute(
+                "SELECT COUNT(*), MIN(queued_at) FROM kafka_outbox"
+            ).fetchone()
+            acknowledged, failures = self.conn.execute(
+                "SELECT acknowledged, failures FROM kafka_delivery_stats WHERE id=1"
+            ).fetchone()
+            last_round = self.conn.execute(
+                "SELECT value FROM run_meta WHERE key='last_completed_round_at'"
+            ).fetchone()
+        oldest_time = parse_iso(oldest)
+        return {
+            "pending": count,
+            "oldest_age_seconds": max(0, (utc_now() - oldest_time).total_seconds()) if oldest_time else 0,
+            "acknowledged": acknowledged, "failures": failures,
+            "last_round_timestamp": parse_iso(last_round[0]).timestamp() if last_round else 0,
+        }
 
     def save_article(self, article, fetched, discovered_at):
         with self.lock:
@@ -2318,6 +2446,9 @@ def poll_round(
     print(f"\n[Round {round_no}] {utc_now().astimezone().strftime('%Y-%m-%d %H:%M:%S %Z')}")
     round_started = time.monotonic()
     round_started_at = utc_now()
+    if kafka_producer is not None and not getattr(args, "observe_only", False):
+        # Drain previously fetched bodies before potentially slow publisher I/O.
+        deliver_outbox(db, kafka_producer)
     queue_start = db.pending_snapshot(round_started_at)
     configured_sources = list(sources)
     pollable_sources, quarantined = db.pollable_sources(configured_sources)
@@ -2430,7 +2561,6 @@ def poll_round(
     discovered_at = iso(utc_now())
 
     fetch_results = {}
-    kafka_queued = 0
     if new_articles:
         with ThreadPoolExecutor(max_workers=args.fetch_workers) as pool:
             futures = {
@@ -2496,6 +2626,11 @@ def poll_round(
                 # Reserve both the cross-publisher title and the source/day
                 # capacity in one transaction immediately before delivery.
                 if fetched["success"]:
+                    delivery_event = (
+                        build_raw_article_event(article, fetched, discovered_at)
+                        if kafka_producer is not None and not getattr(args, "observe_only", False)
+                        else None
+                    )
                     allowed, reason = db.reserve_delivery(
                         article,
                         fetched["title"],
@@ -2507,6 +2642,7 @@ def poll_round(
                         ),
                         getattr(args, "max_articles_per_country_per_day", 0),
                         getattr(args, "max_articles_per_source_country_day", 0),
+                        delivery_event=delivery_event,
                     )
                     if not allowed:
                         fetched["success"] = False
@@ -2514,22 +2650,14 @@ def poll_round(
 
                 fetch_results[article.normalized_url] = fetched
                 db.save_article(article, fetched, discovered_at)
-                # Only articles with a valid extracted body enter news.raw.v1.
-                if (
-                    fetched["success"]
-                    and not getattr(args, "observe_only", False)
-                    and kafka_producer is not None
-                    and kafka_producer.publish(
-                        build_raw_article_event(article, fetched, discovered_at)
-                    )
-                ):
-                    kafka_queued += 1
+                # Successful publish work is already durable in the same SQLite
+                # transaction as its duplicate/quota reservation.
                 db.complete_pending(article)
 
-    if kafka_queued:
-        stats = kafka_producer.flush_round()
+    if kafka_producer is not None and not getattr(args, "observe_only", False):
+        stats = deliver_outbox(db, kafka_producer)
         print(
-            f"  Kafka queued/published     : {kafka_queued:,}/"
+            f"  Kafka queued/published     : {stats['queued']:,}/"
             f"{stats['delivered']:,} -> {kafka_producer.topic}"
         )
         if stats["failed"] or stats["remaining"]:
@@ -2537,6 +2665,8 @@ def poll_round(
                 f"  Kafka delivery warning     : failed={stats['failed']}, "
                 f"pending={stats['remaining']}"
             )
+
+    db.set_meta("last_completed_round_at", iso(utc_now()))
 
     source_result_map = {r["source"].source_id: r for r in results}
 
@@ -2969,6 +3099,7 @@ def build_summary(
 
     return {
         "collection_mode": db.get_meta("collection_mode") or "publish",
+        "kafka_delivery": db.delivery_snapshot(),
         "collection_profile": db.get_meta("collection_profile") or "legacy5",
         "experiment_started_at_utc": iso(started_at),
         "experiment_ended_at_utc": iso(ended_at),
@@ -3297,10 +3428,13 @@ def main():
         print("Kafka connection: OK")
 
     db = DB(db_path)
+    metrics_server = None
     process_session_id = iso(utc_now())
     startup_queue_metrics = None
 
     try:
+        from collector_metrics import start_metrics_server
+        metrics_server = start_metrics_server(db, int(os.getenv("COLLECTOR_METRICS_PORT", "0")))
         db.set_meta("collection_mode", "observe" if args.observe_only else "publish")
         db.set_meta("collection_profile", args.collection_profile)
         initialize_endpoints(sources, db)
@@ -3507,6 +3641,9 @@ def main():
                 kafka_producer.close()
         except Exception:
             pass
+        if metrics_server is not None:
+            metrics_server.shutdown()
+            metrics_server.server_close()
         db.close()
 
 

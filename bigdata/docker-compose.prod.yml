@@ -114,6 +114,10 @@ services:
       KAFKA_RAW_TOPIC: news.raw.v1
       COLLECTOR_HEALTH_FILE: /data/collector/collector.heartbeat
       COLLECTOR_HEALTH_MAX_AGE_SECONDS: "900"
+      COLLECTOR_METRICS_PORT: "9103"
+
+    expose:
+      - "9103"
 
     command:
       - --collection-profile
@@ -518,7 +522,7 @@ services:
       - --conf
       - spark.sql.streaming.metricsEnabled=true
       - --py-files
-      - /opt/spark/apps/article_event.py,/opt/spark/apps/issue_matching.py,/opt/spark/apps/streaming_metrics.py
+      - /opt/spark/apps/event_identity.py,/opt/spark/apps/article_event.py,/opt/spark/apps/issue_matching.py,/opt/spark/apps/streaming_metrics.py
       - /opt/spark/apps/enriched_article_stream.py
 
     depends_on:

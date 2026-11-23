@@ -1,0 +1,5 @@
+{
+  "phase": "pilot",
+  "include_in_formal_aggregate": false,
+  "reason": "Post-commit recovery observation originally returned on already-visible DB state; formal protocol now fences on Kafka committed offsets. All pilot raw observations retained."
+}

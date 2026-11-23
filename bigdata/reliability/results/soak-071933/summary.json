@@ -1,0 +1,67 @@
+{
+  "run": "soak-071933",
+  "input_articles": 10000,
+  "sampling_interval_seconds": 0.5,
+  "measurement": "PostgreSQL first observation of committed final assignment minus collector discovery time; includes queueing and source staging",
+  "shared_host_paired_consumers": true,
+  "themes": 20,
+  "issue_candidates_per_theme": 20,
+  "candidate_dimension_comparisons": 153600000,
+  "versions": {
+    "before": {
+      "unique_persisted": 10000,
+      "missing_ids": 0,
+      "unexpected_ids": 0,
+      "payload_or_assignment_errors": 0,
+      "p50_seconds": 129.0185835,
+      "p95_seconds": 178.75714219999998,
+      "p99_seconds": 180.9170541,
+      "last_arrival_seconds": 181.457296,
+      "batch_completion_articles_per_second": 55.109385075373325
+    },
+    "after": {
+      "unique_persisted": 10000,
+      "missing_ids": 0,
+      "unexpected_ids": 0,
+      "payload_or_assignment_errors": 0,
+      "p50_seconds": 141.5717585,
+      "p95_seconds": 202.5126225,
+      "p99_seconds": 205.06404505,
+      "last_arrival_seconds": 206.076282,
+      "batch_completion_articles_per_second": 48.52572019908628
+    }
+  },
+  "collector_delivery": {
+    "run": "soak-071933",
+    "epoch_ns": 1795418410120847697,
+    "result": {
+      "queued": 10000,
+      "delivered": 10000,
+      "failed": 0,
+      "remaining": 0
+    },
+    "variant": "after",
+    "outbox": {
+      "pending": 0,
+      "oldest_age_seconds": 0,
+      "acknowledged": 10000,
+      "failures": 0,
+      "last_round_timestamp": 0
+    }
+  },
+  "input_manifest_sha256": "21998404ec1021f7af715fd308ade2658f1209c84e0371188df184b224a8c5db",
+  "raw_kafka_records": 10000,
+  "raw_kafka_unique_articles": 10000,
+  "raw_body_hash_mismatches": 0,
+  "raw_json_payload_bytes_total": 42844670,
+  "raw_json_payload_size_bytes": {
+    "min": 1475,
+    "median": 4285.0,
+    "p95": 7085.0,
+    "max": 7085
+  },
+  "body_size_bytes": {
+    "min": 877,
+    "max": 6480
+  }
+}

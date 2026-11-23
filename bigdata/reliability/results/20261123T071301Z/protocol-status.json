@@ -1,0 +1,6 @@
+{
+  "phase": "aborted-lab-cli-startup",
+  "include_in_formal_aggregate": false,
+  "injected_input_events": 0,
+  "reason": "Collector-only CLI failed before experiments.run entered because its new arguments were applied to the Observer.run signature. Corrected before the actual supplementary run. No product failure trial occurred."
+}

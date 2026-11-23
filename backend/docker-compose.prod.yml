@@ -82,6 +82,7 @@ services:
       NOTIFICATION_SCHEDULER_ENABLED: ${NOTIFICATION_SCHEDULER_ENABLED:-false}
     ports:
       - "127.0.0.1:8080:8080"
+      - "${BACKEND_METRICS_BIND_HOST:-127.0.0.1}:9091:9091"
     depends_on:
       postgres:
         condition: service_healthy

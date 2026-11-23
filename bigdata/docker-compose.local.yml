@@ -502,7 +502,7 @@ services:
       - --conf
       - spark.sql.streaming.metricsEnabled=true
       - --py-files
-      - /opt/spark/apps/article_event.py,/opt/spark/apps/issue_matching.py,/opt/spark/apps/streaming_metrics.py
+      - /opt/spark/apps/event_identity.py,/opt/spark/apps/article_event.py,/opt/spark/apps/issue_matching.py,/opt/spark/apps/streaming_metrics.py
       - /opt/spark/apps/enriched_article_stream.py
 
     depends_on:

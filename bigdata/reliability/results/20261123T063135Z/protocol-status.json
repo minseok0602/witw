@@ -1,0 +1,9 @@
+{
+  "phase": "formal-db-and-long-outage; qualified-collector-trials",
+  "db_failpoint_protocol": "Exact event ID JDI MethodExit; DB visibility and uncommitted Kafka target offset asserted before SIGKILL; replay offset committed after restart",
+  "collector_include_only_when": "failpoint.pause_protocol == blocking-trace-v2",
+  "excluded_collector_runs": ["r1-cb-out-063135", "r1-cb-ack-063135", "r1-ca-out-063135", "r1-ca-ack-063135"],
+  "reason": "Independent container probe printed both BEFORE and AFTER self-SIGSTOP when Python was namespace PID 1. These early collector failures were externally killed but not reliably at the intended boundary. Raw observations remain preserved; no causal loss/recovery claim uses them. Later collector trace blocks the production frame until external SIGKILL.",
+  "production_code_modified_during_formal_measurement": false,
+  "instrumentation_correction": "collector_driver.py pause mechanism corrected before repetition 2 collector cases; initial DB scenarios unaffected"
+}

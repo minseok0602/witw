@@ -589,6 +589,7 @@ def build_issue_events(
         article_similarities[article.article_id] = similarity
 
     event = {
+        "event_id": cluster_event_key(cluster),
         "event_type": ISSUE_CREATE,
         "occurred_at": occurred_at,
         "payload": {

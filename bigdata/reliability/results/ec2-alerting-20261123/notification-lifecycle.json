@@ -1,0 +1,107 @@
+{
+  "observer_poll_seconds": 0.5,
+  "fault_to_first_firing_observed_seconds": 1071.004573665,
+  "outbox_drain_to_resolved_observed_seconds": 170.774162551,
+  "first_firing": {
+    "observed_monotonic_ns": 2125990154160,
+    "observed_epoch_ns": 1795434181109684877,
+    "preexisting_when_observer_started": false,
+    "notification": {
+      "received_epoch_ns": 1795434181060295292,
+      "payload": {
+        "receiver": "pipeline",
+        "status": "firing",
+        "alerts": [
+          {
+            "status": "firing",
+            "labels": {
+              "alertname": "CollectorDeliveryStalled",
+              "cluster": "witw-rel-20261123-105044-35b97a",
+              "instance": "collector-long:9103",
+              "job": "collector",
+              "severity": "critical"
+            },
+            "annotations": {
+              "description": "The oldest durable outbox entry has waited 1030.41372 seconds. Payloads remain in SQLite.",
+              "summary": "Fetched articles are waiting for Kafka acknowledgement"
+            },
+            "startsAt": "2026-11-23T11:42:31.04Z",
+            "endsAt": "0001-01-01T00:00:00Z",
+            "generatorURL": "http://de3a2f72ce40:9090/graph?g0.expr=witw_collector_outbox_oldest_age_seconds+%3E+900&g0.tab=1",
+            "fingerprint": "2007de1aa5c3be3a"
+          }
+        ],
+        "groupLabels": {
+          "alertname": "CollectorDeliveryStalled",
+          "cluster": "witw-rel-20261123-105044-35b97a"
+        },
+        "commonLabels": {
+          "alertname": "CollectorDeliveryStalled",
+          "cluster": "witw-rel-20261123-105044-35b97a",
+          "instance": "collector-long:9103",
+          "job": "collector",
+          "severity": "critical"
+        },
+        "commonAnnotations": {
+          "description": "The oldest durable outbox entry has waited 1030.41372 seconds. Payloads remain in SQLite.",
+          "summary": "Fetched articles are waiting for Kafka acknowledgement"
+        },
+        "externalURL": "http://d5010aff6710:9093",
+        "version": "4",
+        "groupKey": "{}:{alertname=\"CollectorDeliveryStalled\", cluster=\"witw-rel-20261123-105044-35b97a\"}",
+        "truncatedAlerts": 0
+      }
+    }
+  },
+  "first_resolved": {
+    "observed_monotonic_ns": 2425945733516,
+    "observed_epoch_ns": 1795434481065263652,
+    "preexisting_when_observer_started": false,
+    "notification": {
+      "received_epoch_ns": 1795434481060851191,
+      "payload": {
+        "receiver": "pipeline",
+        "status": "resolved",
+        "alerts": [
+          {
+            "status": "resolved",
+            "labels": {
+              "alertname": "CollectorDeliveryStalled",
+              "cluster": "witw-rel-20261123-105044-35b97a",
+              "instance": "collector-long:9103",
+              "job": "collector",
+              "severity": "critical"
+            },
+            "annotations": {
+              "description": "The oldest durable outbox entry has waited 1195.413821 seconds. Payloads remain in SQLite.",
+              "summary": "Fetched articles are waiting for Kafka acknowledgement"
+            },
+            "startsAt": "2026-11-23T11:42:31.04Z",
+            "endsAt": "2026-11-23T11:45:31.04Z",
+            "generatorURL": "http://de3a2f72ce40:9090/graph?g0.expr=witw_collector_outbox_oldest_age_seconds+%3E+900&g0.tab=1",
+            "fingerprint": "2007de1aa5c3be3a"
+          }
+        ],
+        "groupLabels": {
+          "alertname": "CollectorDeliveryStalled",
+          "cluster": "witw-rel-20261123-105044-35b97a"
+        },
+        "commonLabels": {
+          "alertname": "CollectorDeliveryStalled",
+          "cluster": "witw-rel-20261123-105044-35b97a",
+          "instance": "collector-long:9103",
+          "job": "collector",
+          "severity": "critical"
+        },
+        "commonAnnotations": {
+          "description": "The oldest durable outbox entry has waited 1195.413821 seconds. Payloads remain in SQLite.",
+          "summary": "Fetched articles are waiting for Kafka acknowledgement"
+        },
+        "externalURL": "http://d5010aff6710:9093",
+        "version": "4",
+        "groupKey": "{}:{alertname=\"CollectorDeliveryStalled\", cluster=\"witw-rel-20261123-105044-35b97a\"}",
+        "truncatedAlerts": 0
+      }
+    }
+  }
+}

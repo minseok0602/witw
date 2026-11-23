@@ -47,6 +47,7 @@ validate-bigdata:
     - KAFKA_EXTERNAL_HOST=localhost KAFKA_BIND_HOST=127.0.0.1 docker compose -p news-bigdata-local -f docker-compose.local.yml config --quiet
     - docker compose -p "$MONITORING_COMPOSE_PROJECT_NAME" -f "$MONITORING_COMPOSE_FILE" config --quiet
     - docker compose -p "$MONITORING_COMPOSE_PROJECT_NAME" -f "$MONITORING_COMPOSE_FILE" run --rm --no-deps --entrypoint promtool prometheus check config /etc/prometheus/prometheus.yml
+    - docker compose -p "$MONITORING_COMPOSE_PROJECT_NAME" -f "$MONITORING_COMPOSE_FILE" run --rm --no-deps --entrypoint promtool prometheus test rules /etc/prometheus/alert_rules.test.yml
 
     # -----------------------------------------------------
     # Kafka Topic 생성 스크립트 문법 검사
@@ -64,6 +65,8 @@ validate-bigdata:
     - KAFKA_EXTERNAL_HOST=validation.invalid KAFKA_BIND_HOST=127.0.0.1 docker compose -p "$COMPOSE_PROJECT_NAME" -f "$COMPOSE_FILE" run --rm --no-deps --entrypoint test spark-master -f /opt/spark/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.2.0.jar
     - KAFKA_EXTERNAL_HOST=validation.invalid KAFKA_BIND_HOST=127.0.0.1 docker compose -p "$COMPOSE_PROJECT_NAME" -f "$COMPOSE_FILE" run --rm --no-deps --entrypoint test spark-master -f /opt/spark/jars/org.postgresql_postgresql-42.7.7.jar
     - KAFKA_EXTERNAL_HOST=validation.invalid KAFKA_BIND_HOST=127.0.0.1 docker compose -p "$COMPOSE_PROJECT_NAME" -f "$COMPOSE_FILE" run --rm --no-deps collector --help
+    - KAFKA_EXTERNAL_HOST=validation.invalid KAFKA_BIND_HOST=127.0.0.1 docker compose -p "$COMPOSE_PROJECT_NAME" -f "$COMPOSE_FILE" run --rm --no-deps --volume "$CI_PROJECT_DIR/bigdata/collector/tests:/app/tests:ro" --entrypoint python collector -m unittest discover -s /app/tests
+    - KAFKA_EXTERNAL_HOST=validation.invalid KAFKA_BIND_HOST=127.0.0.1 docker compose -p "$COMPOSE_PROJECT_NAME" -f "$COMPOSE_FILE" run --rm --no-deps --volume "$CI_PROJECT_DIR/bigdata/monitoring:/monitoring:ro" --entrypoint python collector -m unittest discover -s /monitoring/tests
 
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
@@ -168,12 +171,17 @@ deploy-bigdata:
     # BigData Prometheus / Grafana / Exporter 배포
     # -----------------------------------------------------
     - docker compose --env-file "$BIGDATA_ENV_FILE" -p "$MONITORING_COMPOSE_PROJECT_NAME" -f "$MONITORING_COMPOSE_FILE" config --quiet
-    - docker compose --env-file "$BIGDATA_ENV_FILE" -p "$MONITORING_COMPOSE_PROJECT_NAME" -f "$MONITORING_COMPOSE_FILE" pull alloy prometheus grafana kafka-exporter node-exporter cadvisor
+    - docker compose --env-file "$BIGDATA_ENV_FILE" -p "$MONITORING_COMPOSE_PROJECT_NAME" -f "$MONITORING_COMPOSE_FILE" pull alloy prometheus grafana kafka-exporter node-exporter cadvisor alertmanager alertmanager-config
     - docker compose --env-file "$BIGDATA_ENV_FILE" -p "$MONITORING_COMPOSE_PROJECT_NAME" -f "$MONITORING_COMPOSE_FILE" build hdfs-exporter
     - docker compose --env-file "$BIGDATA_ENV_FILE" -p "$MONITORING_COMPOSE_PROJECT_NAME" -f "$MONITORING_COMPOSE_FILE" run --rm --no-deps alloy validate /etc/alloy/config.alloy
+    - docker compose --env-file "$BIGDATA_ENV_FILE" -p "$MONITORING_COMPOSE_PROJECT_NAME" -f "$MONITORING_COMPOSE_FILE" run --rm --no-deps alertmanager-config
+    - docker compose --env-file "$BIGDATA_ENV_FILE" -p "$MONITORING_COMPOSE_PROJECT_NAME" -f "$MONITORING_COMPOSE_FILE" run --rm --no-deps --entrypoint amtool alertmanager check-config /etc/alertmanager/alertmanager.yml
     - docker compose --env-file "$BIGDATA_ENV_FILE" -p "$MONITORING_COMPOSE_PROJECT_NAME" -f "$MONITORING_COMPOSE_FILE" up -d --wait --wait-timeout 180
     # bind mount로 갱신된 scrape/alert 설정을 실행 중인 Prometheus에 즉시 반영한다.
     - docker kill --signal=HUP news-prometheus
+    - docker kill --signal=HUP news-alertmanager
+    # Datasource provisioning is read at startup, unlike dashboard file polling.
+    - docker compose --env-file "$BIGDATA_ENV_FILE" -p "$MONITORING_COMPOSE_PROJECT_NAME" -f "$MONITORING_COMPOSE_FILE" restart grafana
 
     # -----------------------------------------------------
     # 배포 결과 확인
@@ -189,6 +197,7 @@ deploy-bigdata:
     - test "$(docker inspect -f '{{.State.Running}}' news-spark-enriched-stream)" = "true"
     - test "$(docker inspect -f '{{.State.Running}}' news-spark-unclassified-issue-stream)" = "true"
     - test "$(docker inspect -f '{{.State.Running}}' news-prometheus)" = "true"
+    - test "$(docker inspect -f '{{.State.Running}}' news-alertmanager)" = "true"
     - test "$(docker inspect -f '{{.State.Running}}' news-grafana)" = "true"
     - test "$(docker inspect -f '{{.State.Running}}' news-kafka-exporter)" = "true"
     - test "$(docker inspect -f '{{.State.Running}}' news-hdfs-exporter)" = "true"

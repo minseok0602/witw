@@ -8,4 +8,7 @@ datasources:
     url: $BIGDATA_PROMETHEUS_URL
     jsonData:
       timeInterval: 15s
+      prometheusType: Prometheus
+      prometheusVersion: 3.13.1
+      manageAlerts: true
     editable: false

@@ -1,0 +1,985 @@
+{
+  "experiment_id": "20261123T063135Z",
+  "results": [
+    {
+      "scenario": "duplicate_events",
+      "run": "r1-dup-063135",
+      "input_articles": 1000,
+      "unique_issue_events": 100,
+      "duplicate_issue_events": 20,
+      "elapsed_seconds": 32.86174810000011,
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "incorrect_assignments": 0,
+          "committed_issue_writes": 120
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "incorrect_assignments": 0,
+          "committed_issue_writes": 100
+        }
+      },
+      "dlt_records": 0
+    },
+    {
+      "scenario": "reordered_dependencies",
+      "run": "r1-ord-063135",
+      "input_articles": 1000,
+      "unique_issue_events": 100,
+      "duplicate_issue_events": 0,
+      "elapsed_seconds": 36.059618500003126,
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "incorrect_assignments": 1000,
+          "committed_issue_writes": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "incorrect_assignments": 0,
+          "committed_issue_writes": 100
+        }
+      },
+      "dlt_records": 100
+    },
+    {
+      "scenario": "db_precommit_sigkill",
+      "run": "r1-precommit-063135",
+      "kafka_record": [
+        {
+          "partition": 0,
+          "offset": 2718
+        }
+      ],
+      "committed_offsets_at_failpoint": {
+        "before": [
+          {
+            "topic": "news.event.v1",
+            "partition": 0,
+            "offset": 2718
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 2,
+            "offset": 2665
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 1,
+            "offset": 2670
+          }
+        ],
+        "after": [
+          {
+            "topic": "news.event.v1",
+            "partition": 2,
+            "offset": 2665
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 0,
+            "offset": 2718
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 1,
+            "offset": 2670
+          }
+        ]
+      },
+      "visible_before_sigkill": {
+        "before": null,
+        "after": null
+      },
+      "visible_after_sigkill": {
+        "before": null,
+        "after": null
+      },
+      "fault_to_recovered_seconds": 47.252185599998484,
+      "restart_to_replay_committed_seconds": {
+        "after": 43.24771659999897,
+        "before": 43.75208809999822
+      },
+      "committed_issue_writes": {
+        "before": 1,
+        "after": 1
+      },
+      "final_assignment": {
+        "before": "r1-precommit-063135-i0000",
+        "after": "r1-precommit-063135-i0000"
+      }
+    },
+    {
+      "scenario": "db_postcommit_sigkill",
+      "run": "r1-postcommit-063135",
+      "kafka_record": [
+        {
+          "partition": 1,
+          "offset": 2670
+        }
+      ],
+      "committed_offsets_at_failpoint": {
+        "before": [
+          {
+            "topic": "news.event.v1",
+            "partition": 0,
+            "offset": 2719
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 2,
+            "offset": 2666
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 1,
+            "offset": 2670
+          }
+        ],
+        "after": [
+          {
+            "topic": "news.event.v1",
+            "partition": 2,
+            "offset": 2666
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 0,
+            "offset": 2719
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 1,
+            "offset": 2670
+          }
+        ]
+      },
+      "visible_before_sigkill": {
+        "before": "r1-postcommit-063135-i0000",
+        "after": "r1-postcommit-063135-i0000"
+      },
+      "visible_after_sigkill": {
+        "before": "r1-postcommit-063135-i0000",
+        "after": "r1-postcommit-063135-i0000"
+      },
+      "fault_to_recovered_seconds": 47.57005009999921,
+      "restart_to_replay_committed_seconds": {
+        "before": 44.21117629999935,
+        "after": 44.21414960000038
+      },
+      "committed_issue_writes": {
+        "before": 2,
+        "after": 1
+      },
+      "final_assignment": {
+        "before": "r1-postcommit-063135-i0000",
+        "after": "r1-postcommit-063135-i0000"
+      }
+    },
+    {
+      "scenario": "database_unresponsive_40s",
+      "run": "r1-dbnet-063135",
+      "input_articles": 1000,
+      "fault_duration_seconds": 42.06048390000069,
+      "restore_to_drained_seconds": 24.87748509999801,
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0
+        }
+      },
+      "dlt_records": 0
+    },
+    {
+      "scenario": "collector_outbox_commit_sigkill",
+      "run": "r1-cb-out-063135",
+      "collector_version": "before",
+      "input_articles": 1000,
+      "actual_kafka_raw_records": 1000,
+      "actual_kafka_unique_articles": 1000,
+      "fault_to_observed_final_seconds": 144.8103560999989,
+      "failpoint": {
+        "run": "r1-cb-out-063135",
+        "epoch_ns": 1795415765498129331,
+        "point": "outbox_commit",
+        "function": "reserve_delivery",
+        "variant": "before"
+      },
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        }
+      }
+    },
+    {
+      "scenario": "collector_ack_before_delete_sigkill",
+      "run": "r1-cb-ack-063135",
+      "collector_version": "before",
+      "input_articles": 1000,
+      "actual_kafka_raw_records": 998,
+      "actual_kafka_unique_articles": 998,
+      "fault_to_observed_final_seconds": 128.33841460000258,
+      "failpoint": {
+        "run": "r1-cb-ack-063135",
+        "epoch_ns": 1795415915230289647,
+        "point": "ack_before_delete",
+        "function": "_delivery_callback",
+        "variant": "before"
+      },
+      "versions": {
+        "before": {
+          "persisted_articles": 998,
+          "missing_ids": 2,
+          "payload_or_assignment_mismatches": 2
+        },
+        "after": {
+          "persisted_articles": 998,
+          "missing_ids": 2,
+          "payload_or_assignment_mismatches": 2
+        }
+      }
+    },
+    {
+      "scenario": "collector_outbox_commit_sigkill",
+      "run": "r1-ca-out-063135",
+      "collector_version": "after",
+      "input_articles": 1000,
+      "actual_kafka_raw_records": 1000,
+      "actual_kafka_unique_articles": 1000,
+      "fault_to_observed_final_seconds": 131.78338409999924,
+      "failpoint": {
+        "run": "r1-ca-out-063135",
+        "epoch_ns": 1795416049538531421,
+        "point": "outbox_commit",
+        "function": "reserve_delivery",
+        "variant": "after",
+        "outbox": {
+          "pending": 1000,
+          "oldest_age_seconds": 1.812445,
+          "acknowledged": 0,
+          "failures": 0,
+          "last_round_timestamp": 0
+        }
+      },
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        }
+      }
+    },
+    {
+      "scenario": "collector_ack_before_delete_sigkill",
+      "run": "r1-ca-ack-063135",
+      "collector_version": "after",
+      "input_articles": 1000,
+      "actual_kafka_raw_records": 1000,
+      "actual_kafka_unique_articles": 1000,
+      "fault_to_observed_final_seconds": 131.92814780000117,
+      "failpoint": {
+        "run": "r1-ca-ack-063135",
+        "epoch_ns": 1795416187167293196,
+        "point": "ack_before_delete",
+        "function": "record_delivery",
+        "variant": "after",
+        "outbox": {
+          "pending": 1000,
+          "oldest_age_seconds": 1.708669,
+          "acknowledged": 0,
+          "failures": 0,
+          "last_round_timestamp": 0
+        }
+      },
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        }
+      }
+    },
+    {
+      "scenario": "duplicate_events",
+      "run": "r2-dup-063135",
+      "input_articles": 1000,
+      "unique_issue_events": 100,
+      "duplicate_issue_events": 20,
+      "elapsed_seconds": 24.992554100001144,
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "incorrect_assignments": 0,
+          "committed_issue_writes": 120
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "incorrect_assignments": 0,
+          "committed_issue_writes": 100
+        }
+      },
+      "dlt_records": 0
+    },
+    {
+      "scenario": "reordered_dependencies",
+      "run": "r2-ord-063135",
+      "input_articles": 1000,
+      "unique_issue_events": 100,
+      "duplicate_issue_events": 0,
+      "elapsed_seconds": 32.233866300000955,
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "incorrect_assignments": 1000,
+          "committed_issue_writes": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "incorrect_assignments": 0,
+          "committed_issue_writes": 100
+        }
+      },
+      "dlt_records": 100
+    },
+    {
+      "scenario": "db_precommit_sigkill",
+      "run": "r2-precommit-063135",
+      "kafka_record": [
+        {
+          "partition": 1,
+          "offset": 6510
+        }
+      ],
+      "committed_offsets_at_failpoint": {
+        "before": [
+          {
+            "topic": "news.event.v1",
+            "partition": 0,
+            "offset": 6529
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 2,
+            "offset": 6434
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 1,
+            "offset": 6510
+          }
+        ],
+        "after": [
+          {
+            "topic": "news.event.v1",
+            "partition": 2,
+            "offset": 6434
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 0,
+            "offset": 6529
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 1,
+            "offset": 6510
+          }
+        ]
+      },
+      "visible_before_sigkill": {
+        "before": null,
+        "after": null
+      },
+      "visible_after_sigkill": {
+        "before": null,
+        "after": null
+      },
+      "fault_to_recovered_seconds": 54.13253529999929,
+      "restart_to_replay_committed_seconds": {
+        "after": 49.82799729999897,
+        "before": 50.33236240000042
+      },
+      "committed_issue_writes": {
+        "before": 1,
+        "after": 1
+      },
+      "final_assignment": {
+        "before": "r2-precommit-063135-i0000",
+        "after": "r2-precommit-063135-i0000"
+      }
+    },
+    {
+      "scenario": "db_postcommit_sigkill",
+      "run": "r2-postcommit-063135",
+      "kafka_record": [
+        {
+          "partition": 1,
+          "offset": 6511
+        }
+      ],
+      "committed_offsets_at_failpoint": {
+        "before": [
+          {
+            "topic": "news.event.v1",
+            "partition": 0,
+            "offset": 6530
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 2,
+            "offset": 6434
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 1,
+            "offset": 6511
+          }
+        ],
+        "after": [
+          {
+            "topic": "news.event.v1",
+            "partition": 2,
+            "offset": 6434
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 0,
+            "offset": 6530
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 1,
+            "offset": 6511
+          }
+        ]
+      },
+      "visible_before_sigkill": {
+        "before": "r2-postcommit-063135-i0000",
+        "after": "r2-postcommit-063135-i0000"
+      },
+      "visible_after_sigkill": {
+        "before": "r2-postcommit-063135-i0000",
+        "after": "r2-postcommit-063135-i0000"
+      },
+      "fault_to_recovered_seconds": 50.11142119999931,
+      "restart_to_replay_committed_seconds": {
+        "after": 42.6996364000006,
+        "before": 46.73395140000139
+      },
+      "committed_issue_writes": {
+        "before": 2,
+        "after": 1
+      },
+      "final_assignment": {
+        "before": "r2-postcommit-063135-i0000",
+        "after": "r2-postcommit-063135-i0000"
+      }
+    },
+    {
+      "scenario": "database_unresponsive_40s",
+      "run": "r2-dbnet-063135",
+      "input_articles": 1000,
+      "fault_duration_seconds": 41.958098099999916,
+      "restore_to_drained_seconds": 25.413412400001107,
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0
+        }
+      },
+      "dlt_records": 0
+    },
+    {
+      "scenario": "collector_outbox_commit_sigkill",
+      "run": "r2-ca-out-063135",
+      "collector_version": "after",
+      "input_articles": 1000,
+      "actual_kafka_raw_records": 1000,
+      "actual_kafka_unique_articles": 1000,
+      "fault_to_observed_final_seconds": 166.02674900000056,
+      "failpoint": {
+        "run": "r2-ca-out-063135",
+        "epoch_ns": 1795416586441662818,
+        "point": "outbox_commit",
+        "function": "reserve_delivery",
+        "variant": "after",
+        "pause_protocol": "blocking-trace-v2",
+        "outbox": {
+          "pending": 1000,
+          "oldest_age_seconds": 1.58318,
+          "acknowledged": 0,
+          "failures": 0,
+          "last_round_timestamp": 0
+        }
+      },
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        }
+      }
+    },
+    {
+      "scenario": "collector_ack_before_delete_sigkill",
+      "run": "r2-ca-ack-063135",
+      "collector_version": "after",
+      "input_articles": 1000,
+      "actual_kafka_raw_records": 1099,
+      "actual_kafka_unique_articles": 1000,
+      "fault_to_observed_final_seconds": 180.30351299999893,
+      "failpoint": {
+        "run": "r2-ca-ack-063135",
+        "epoch_ns": 1795416758105152190,
+        "point": "ack_before_delete",
+        "function": "record_delivery",
+        "variant": "after",
+        "pause_protocol": "blocking-trace-v2",
+        "outbox": {
+          "pending": 1000,
+          "oldest_age_seconds": 1.553487,
+          "acknowledged": 0,
+          "failures": 0,
+          "last_round_timestamp": 0
+        }
+      },
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        }
+      }
+    },
+    {
+      "scenario": "collector_outbox_commit_sigkill",
+      "run": "r2-cb-out-063135",
+      "collector_version": "before",
+      "input_articles": 1000,
+      "actual_kafka_raw_records": 999,
+      "actual_kafka_unique_articles": 999,
+      "fault_to_observed_final_seconds": 149.18210790000012,
+      "failpoint": {
+        "run": "r2-cb-out-063135",
+        "epoch_ns": 1795416945533056649,
+        "point": "outbox_commit",
+        "function": "reserve_delivery",
+        "variant": "before",
+        "pause_protocol": "blocking-trace-v2"
+      },
+      "versions": {
+        "before": {
+          "persisted_articles": 999,
+          "missing_ids": 1,
+          "payload_or_assignment_mismatches": 1
+        },
+        "after": {
+          "persisted_articles": 999,
+          "missing_ids": 1,
+          "payload_or_assignment_mismatches": 1
+        }
+      }
+    },
+    {
+      "scenario": "collector_ack_before_delete_sigkill",
+      "run": "r2-cb-ack-063135",
+      "collector_version": "before",
+      "input_articles": 1000,
+      "actual_kafka_raw_records": 1000,
+      "actual_kafka_unique_articles": 1000,
+      "fault_to_observed_final_seconds": 162.01837199999864,
+      "failpoint": {
+        "run": "r2-cb-ack-063135",
+        "epoch_ns": 1795417099287876817,
+        "point": "ack_before_delete",
+        "function": "_delivery_callback",
+        "variant": "before",
+        "pause_protocol": "blocking-trace-v2"
+      },
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        }
+      }
+    },
+    {
+      "scenario": "duplicate_events",
+      "run": "r3-dup-063135",
+      "input_articles": 1000,
+      "unique_issue_events": 100,
+      "duplicate_issue_events": 20,
+      "elapsed_seconds": 24.821673700000247,
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "incorrect_assignments": 0,
+          "committed_issue_writes": 120
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "incorrect_assignments": 0,
+          "committed_issue_writes": 100
+        }
+      },
+      "dlt_records": 0
+    },
+    {
+      "scenario": "reordered_dependencies",
+      "run": "r3-ord-063135",
+      "input_articles": 1000,
+      "unique_issue_events": 100,
+      "duplicate_issue_events": 0,
+      "elapsed_seconds": 34.992849500002194,
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "incorrect_assignments": 1000,
+          "committed_issue_writes": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "incorrect_assignments": 0,
+          "committed_issue_writes": 100
+        }
+      },
+      "dlt_records": 100
+    },
+    {
+      "scenario": "db_precommit_sigkill",
+      "run": "r3-precommit-063135",
+      "kafka_record": [
+        {
+          "partition": 0,
+          "offset": 10418
+        }
+      ],
+      "committed_offsets_at_failpoint": {
+        "before": [
+          {
+            "topic": "news.event.v1",
+            "partition": 0,
+            "offset": 10418
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 2,
+            "offset": 10167
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 1,
+            "offset": 10308
+          }
+        ],
+        "after": [
+          {
+            "topic": "news.event.v1",
+            "partition": 2,
+            "offset": 10167
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 0,
+            "offset": 10418
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 1,
+            "offset": 10308
+          }
+        ]
+      },
+      "visible_before_sigkill": {
+        "before": null,
+        "after": null
+      },
+      "visible_after_sigkill": {
+        "before": null,
+        "after": null
+      },
+      "fault_to_recovered_seconds": 50.43751560000237,
+      "restart_to_replay_committed_seconds": {
+        "before": 40.135294600000634,
+        "after": 47.20488409999962
+      },
+      "committed_issue_writes": {
+        "before": 1,
+        "after": 1
+      },
+      "final_assignment": {
+        "before": "r3-precommit-063135-i0000",
+        "after": "r3-precommit-063135-i0000"
+      }
+    },
+    {
+      "scenario": "db_postcommit_sigkill",
+      "run": "r3-postcommit-063135",
+      "kafka_record": [
+        {
+          "partition": 1,
+          "offset": 10308
+        }
+      ],
+      "committed_offsets_at_failpoint": {
+        "before": [
+          {
+            "topic": "news.event.v1",
+            "partition": 0,
+            "offset": 10420
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 2,
+            "offset": 10167
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 1,
+            "offset": 10308
+          }
+        ],
+        "after": [
+          {
+            "topic": "news.event.v1",
+            "partition": 2,
+            "offset": 10167
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 0,
+            "offset": 10420
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 1,
+            "offset": 10308
+          }
+        ]
+      },
+      "visible_before_sigkill": {
+        "before": "r3-postcommit-063135-i0000",
+        "after": "r3-postcommit-063135-i0000"
+      },
+      "visible_after_sigkill": {
+        "before": "r3-postcommit-063135-i0000",
+        "after": "r3-postcommit-063135-i0000"
+      },
+      "fault_to_recovered_seconds": 51.029756500000076,
+      "restart_to_replay_committed_seconds": {
+        "before": 44.224209700001666,
+        "after": 47.762496600000304
+      },
+      "committed_issue_writes": {
+        "before": 2,
+        "after": 1
+      },
+      "final_assignment": {
+        "before": "r3-postcommit-063135-i0000",
+        "after": "r3-postcommit-063135-i0000"
+      }
+    },
+    {
+      "scenario": "database_unresponsive_40s",
+      "run": "r3-dbnet-063135",
+      "input_articles": 1000,
+      "fault_duration_seconds": 42.065222500001255,
+      "restore_to_drained_seconds": 25.631371299998136,
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0
+        }
+      },
+      "dlt_records": 0
+    },
+    {
+      "scenario": "collector_outbox_commit_sigkill",
+      "run": "r3-cb-out-063135",
+      "collector_version": "before",
+      "input_articles": 1000,
+      "actual_kafka_raw_records": 999,
+      "actual_kafka_unique_articles": 999,
+      "fault_to_observed_final_seconds": 167.70033630000034,
+      "failpoint": {
+        "run": "r3-cb-out-063135",
+        "epoch_ns": 1795417529577264167,
+        "point": "outbox_commit",
+        "function": "reserve_delivery",
+        "variant": "before",
+        "pause_protocol": "blocking-trace-v2"
+      },
+      "versions": {
+        "before": {
+          "persisted_articles": 999,
+          "missing_ids": 1,
+          "payload_or_assignment_mismatches": 1
+        },
+        "after": {
+          "persisted_articles": 999,
+          "missing_ids": 1,
+          "payload_or_assignment_mismatches": 1
+        }
+      }
+    },
+    {
+      "scenario": "collector_ack_before_delete_sigkill",
+      "run": "r3-cb-ack-063135",
+      "collector_version": "before",
+      "input_articles": 1000,
+      "actual_kafka_raw_records": 1000,
+      "actual_kafka_unique_articles": 1000,
+      "fault_to_observed_final_seconds": 84.71211229999972,
+      "failpoint": {
+        "run": "r3-cb-ack-063135",
+        "epoch_ns": 1795417699617893802,
+        "point": "ack_before_delete",
+        "function": "_delivery_callback",
+        "variant": "before",
+        "pause_protocol": "blocking-trace-v2"
+      },
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        }
+      }
+    },
+    {
+      "scenario": "collector_outbox_commit_sigkill",
+      "run": "r3-ca-out-063135",
+      "collector_version": "after",
+      "input_articles": 1000,
+      "actual_kafka_raw_records": 1000,
+      "actual_kafka_unique_articles": 1000,
+      "fault_to_observed_final_seconds": 82.95996889999878,
+      "failpoint": {
+        "run": "r3-ca-out-063135",
+        "epoch_ns": 1795417787661819669,
+        "point": "outbox_commit",
+        "function": "reserve_delivery",
+        "variant": "after",
+        "pause_protocol": "blocking-trace-v2",
+        "outbox": {
+          "pending": 1000,
+          "oldest_age_seconds": 0.978401,
+          "acknowledged": 0,
+          "failures": 0,
+          "last_round_timestamp": 0
+        }
+      },
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        }
+      }
+    },
+    {
+      "scenario": "collector_ack_before_delete_sigkill",
+      "run": "r3-ca-ack-063135",
+      "collector_version": "after",
+      "input_articles": 1000,
+      "actual_kafka_raw_records": 1177,
+      "actual_kafka_unique_articles": 1000,
+      "fault_to_observed_final_seconds": 85.8127542000002,
+      "failpoint": {
+        "run": "r3-ca-ack-063135",
+        "epoch_ns": 1795417874071905728,
+        "point": "ack_before_delete",
+        "function": "record_delivery",
+        "variant": "after",
+        "pause_protocol": "blocking-trace-v2",
+        "outbox": {
+          "pending": 1000,
+          "oldest_age_seconds": 1.028228,
+          "acknowledged": 0,
+          "failures": 0,
+          "last_round_timestamp": 0
+        }
+      },
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        }
+      }
+    }
+  ]
+}

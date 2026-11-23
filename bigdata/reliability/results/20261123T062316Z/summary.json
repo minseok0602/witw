@@ -1,0 +1,195 @@
+{
+  "experiment_id": "20261123T062316Z",
+  "results": [
+    {
+      "scenario": "duplicate_events",
+      "run": "r1-dup-062316",
+      "input_articles": 1000,
+      "unique_issue_events": 100,
+      "duplicate_issue_events": 20,
+      "elapsed_seconds": 40.598409999998694,
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "incorrect_assignments": 0,
+          "committed_issue_writes": 120
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "incorrect_assignments": 0,
+          "committed_issue_writes": 100
+        }
+      },
+      "dlt_records": 0
+    },
+    {
+      "scenario": "reordered_dependencies",
+      "run": "r1-ord-062316",
+      "input_articles": 1000,
+      "unique_issue_events": 100,
+      "duplicate_issue_events": 0,
+      "elapsed_seconds": 40.78932989999885,
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "incorrect_assignments": 1000,
+          "committed_issue_writes": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "incorrect_assignments": 0,
+          "committed_issue_writes": 100
+        }
+      },
+      "dlt_records": 100
+    },
+    {
+      "scenario": "db_precommit_sigkill",
+      "run": "r1-precommit-062316",
+      "kafka_record": [
+        {
+          "partition": 1,
+          "offset": 760
+        }
+      ],
+      "committed_offsets_at_failpoint": {
+        "before": [
+          {
+            "topic": "news.event.v1",
+            "partition": 0,
+            "offset": 755
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 2,
+            "offset": 706
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 1,
+            "offset": 760
+          }
+        ],
+        "after": [
+          {
+            "topic": "news.event.v1",
+            "partition": 2,
+            "offset": 706
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 0,
+            "offset": 755
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 1,
+            "offset": 760
+          }
+        ]
+      },
+      "visible_before_sigkill": {
+        "before": null,
+        "after": null
+      },
+      "visible_after_sigkill": {
+        "before": null,
+        "after": null
+      },
+      "fault_to_recovered_seconds": 56.938717400000314,
+      "committed_issue_writes": {
+        "before": 1,
+        "after": 1
+      },
+      "final_assignment": {
+        "before": "r1-precommit-062316-i0000",
+        "after": "r1-precommit-062316-i0000"
+      }
+    },
+    {
+      "scenario": "db_postcommit_sigkill",
+      "run": "r1-postcommit-062316",
+      "kafka_record": [
+        {
+          "partition": 2,
+          "offset": 707
+        }
+      ],
+      "committed_offsets_at_failpoint": {
+        "before": [
+          {
+            "topic": "news.event.v1",
+            "partition": 0,
+            "offset": 755
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 2,
+            "offset": 707
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 1,
+            "offset": 761
+          }
+        ],
+        "after": [
+          {
+            "topic": "news.event.v1",
+            "partition": 2,
+            "offset": 707
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 0,
+            "offset": 755
+          },
+          {
+            "topic": "news.event.v1",
+            "partition": 1,
+            "offset": 761
+          }
+        ]
+      },
+      "visible_before_sigkill": {
+        "before": "r1-postcommit-062316-i0000",
+        "after": "r1-postcommit-062316-i0000"
+      },
+      "visible_after_sigkill": {
+        "before": "r1-postcommit-062316-i0000",
+        "after": "r1-postcommit-062316-i0000"
+      },
+      "fault_to_recovered_seconds": 3.583208399999421,
+      "committed_issue_writes": {
+        "before": 1,
+        "after": 1
+      },
+      "final_assignment": {
+        "before": "r1-postcommit-062316-i0000",
+        "after": "r1-postcommit-062316-i0000"
+      }
+    },
+    {
+      "scenario": "database_unresponsive_40s",
+      "run": "r1-dbnet-062316",
+      "input_articles": 1000,
+      "fault_duration_seconds": 42.419170699999086,
+      "restore_to_drained_seconds": 60.433266700001695,
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0
+        }
+      },
+      "dlt_records": 0
+    }
+  ]
+}

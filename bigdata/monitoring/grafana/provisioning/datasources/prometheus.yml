@@ -8,3 +8,19 @@ datasources:
     url: http://prometheus:9090
     isDefault: true
     editable: false
+    jsonData:
+      httpMethod: POST
+      timeInterval: 15s
+      prometheusType: Prometheus
+      prometheusVersion: 3.13.1
+      manageAlerts: true
+
+  - name: Pipeline Alertmanager
+    uid: alertmanager-bigdata
+    type: alertmanager
+    access: proxy
+    url: http://alertmanager:9093
+    editable: false
+    jsonData:
+      implementation: prometheus
+      handleGrafanaManagedAlerts: false

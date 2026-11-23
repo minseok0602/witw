@@ -1,0 +1,135 @@
+{
+  "experiment_id": "20261123T071329Z",
+  "results": [
+    {
+      "scenario": "collector_outbox_commit_sigkill",
+      "run": "r4-ca-out-071329",
+      "collector_version": "after",
+      "input_articles": 1000,
+      "actual_kafka_raw_records": 1000,
+      "actual_kafka_unique_articles": 1000,
+      "fault_to_observed_final_seconds": 82.44433930000014,
+      "failpoint": {
+        "run": "r4-ca-out-071329",
+        "epoch_ns": 1795418013167573671,
+        "point": "outbox_commit",
+        "function": "reserve_delivery",
+        "variant": "after",
+        "pause_protocol": "blocking-trace-v2",
+        "outbox": {
+          "pending": 1000,
+          "oldest_age_seconds": 0.954136,
+          "acknowledged": 0,
+          "failures": 0,
+          "last_round_timestamp": 0
+        }
+      },
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        }
+      }
+    },
+    {
+      "scenario": "collector_ack_before_delete_sigkill",
+      "run": "r4-ca-ack-071329",
+      "collector_version": "after",
+      "input_articles": 1000,
+      "actual_kafka_raw_records": 1182,
+      "actual_kafka_unique_articles": 1000,
+      "fault_to_observed_final_seconds": 84.41576569999961,
+      "failpoint": {
+        "run": "r4-ca-ack-071329",
+        "epoch_ns": 1795418099042442781,
+        "point": "ack_before_delete",
+        "function": "record_delivery",
+        "variant": "after",
+        "pause_protocol": "blocking-trace-v2",
+        "outbox": {
+          "pending": 1000,
+          "oldest_age_seconds": 0.964583,
+          "acknowledged": 0,
+          "failures": 0,
+          "last_round_timestamp": 0
+        }
+      },
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        }
+      }
+    },
+    {
+      "scenario": "collector_outbox_commit_sigkill",
+      "run": "r4-cb-out-071329",
+      "collector_version": "before",
+      "input_articles": 1000,
+      "actual_kafka_raw_records": 999,
+      "actual_kafka_unique_articles": 999,
+      "fault_to_observed_final_seconds": 71.74780639999881,
+      "failpoint": {
+        "run": "r4-cb-out-071329",
+        "epoch_ns": 1795418186762769982,
+        "point": "outbox_commit",
+        "function": "reserve_delivery",
+        "variant": "before",
+        "pause_protocol": "blocking-trace-v2"
+      },
+      "versions": {
+        "before": {
+          "persisted_articles": 999,
+          "missing_ids": 1,
+          "payload_or_assignment_mismatches": 1
+        },
+        "after": {
+          "persisted_articles": 999,
+          "missing_ids": 1,
+          "payload_or_assignment_mismatches": 1
+        }
+      }
+    },
+    {
+      "scenario": "collector_ack_before_delete_sigkill",
+      "run": "r4-cb-ack-071329",
+      "collector_version": "before",
+      "input_articles": 1000,
+      "actual_kafka_raw_records": 1000,
+      "actual_kafka_unique_articles": 1000,
+      "fault_to_observed_final_seconds": 75.2773159999997,
+      "failpoint": {
+        "run": "r4-cb-ack-071329",
+        "epoch_ns": 1795418260452571573,
+        "point": "ack_before_delete",
+        "function": "_delivery_callback",
+        "variant": "before",
+        "pause_protocol": "blocking-trace-v2"
+      },
+      "versions": {
+        "before": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        },
+        "after": {
+          "persisted_articles": 1000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        }
+      }
+    }
+  ]
+}

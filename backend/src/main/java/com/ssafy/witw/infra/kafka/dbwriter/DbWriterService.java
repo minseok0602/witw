@@ -55,7 +55,7 @@ public class DbWriterService {
     private final IssueRepository issueRepository;
     private final JdbcTemplate jdbcTemplate;
 
-    @Transactional
+    @Transactional(noRollbackFor = MissingEventDependencyException.class)
     public void handle(DbWriterEvent event) {
         require(event, "event");
         requireText(event.eventType(), "event_type");
@@ -212,6 +212,13 @@ public class DbWriterService {
                 require(payload.firstSeenAt(), "payload.first_seen_at")
         );
         LocalDateTime eventTime = toKstLocalDateTime(occurredAt);
+        // Check dependencies before performing any writes. The inbox can then
+        // retain this event without committing a partially created issue.
+        List<Article> articles = articleRepository.findAllById(articleIds);
+        if (articles.size() != articleIds.size()) {
+            throw new MissingEventDependencyException(
+                    "ISSUE_CREATE references articles not stored yet: " + articleIds);
+        }
         Long issueId = jdbcTemplate.queryForObject(
                 ISSUE_UPSERT,
                 Long.class,
@@ -220,19 +227,8 @@ public class DbWriterService {
         if (issueId == null) {
             throw new IllegalStateException("Issue upsert did not return an id");
         }
-        Issue issue = findIssue(issueId);
-
-        List<Article> articles = articleRepository.findAllById(articleIds);
-        if (articles.size() != articleIds.size()) {
-            Set<String> foundIds = new LinkedHashSet<>();
-            articles.forEach(article -> foundIds.add(article.getId()));
-            List<String> missingIds = articleIds.stream()
-                    .filter(articleId -> !foundIds.contains(articleId))
-                    .toList();
-            throw new IllegalStateException(
-                    "ISSUE_CREATE references articles not stored yet: " + missingIds
-            );
-        }
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(() -> new IllegalStateException("Issue upsert did not persist an issue"));
 
         LocalDateTime assignedAt = toKstLocalDateTime(occurredAt);
         for (Article article : articles) {
@@ -305,12 +301,12 @@ public class DbWriterService {
 
     private Article findArticle(String articleId) {
         return articleRepository.findById(articleId)
-                .orElseThrow(() -> new IllegalStateException("Article not found: " + articleId));
+                .orElseThrow(() -> new MissingEventDependencyException("Article not found: " + articleId));
     }
 
     private Issue findIssue(Long issueId) {
         return issueRepository.findById(issueId)
-                .orElseThrow(() -> new IllegalStateException("Issue not found: " + issueId));
+                .orElseThrow(() -> new MissingEventDependencyException("Issue not found: " + issueId));
     }
 
     private <T> T convert(DbWriterEvent event, Class<T> payloadType) {
