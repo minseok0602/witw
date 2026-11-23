@@ -6,6 +6,7 @@ import json
 import math
 import re
 from typing import Any
+from event_identity import event_id
 
 
 EVENT_TYPE = "ARTICLE_UPSERT"
@@ -212,6 +213,7 @@ def transform_kafka_message(raw_value: str) -> tuple[str, str]:
         raise InvalidEnrichedArticle("value는 무조건 json이어야 합니다.")
 
     event = build_article_upsert_event(article)
+    event["event_id"] = event_id(event["event_type"], event["payload"])
 
     # 같은 기사의 이벤트가 가능한 한 같은 Kafka Partition으로 전달되도록
     # article_id를 Kafka Key로 사용한다.

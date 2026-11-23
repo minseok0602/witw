@@ -8,6 +8,8 @@ import tools.jackson.databind.json.JsonMapper;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class DbWriterKafkaConsumerTest {
@@ -18,7 +20,8 @@ class DbWriterKafkaConsumerTest {
             try (var context = new AnnotationConfigApplicationContext()) {
                 context.getEnvironment().setActiveProfiles(profile);
                 context.registerBean(ObjectMapper.class, () -> objectMapper);
-                context.registerBean(DbWriterService.class, () -> dbWriterService);
+                context.registerBean(DbWriterInboxService.class, () -> inbox);
+                context.registerBean(DbWriterPipelineMetrics.class, () -> metrics);
                 context.register(DbWriterKafkaConsumer.class);
                 context.refresh();
 
@@ -32,10 +35,11 @@ class DbWriterKafkaConsumerTest {
     private final ObjectMapper objectMapper = JsonMapper.builder()
             .findAndAddModules()
             .build();
-    private final DbWriterService dbWriterService = mock(DbWriterService.class);
+    private final DbWriterInboxService inbox = mock(DbWriterInboxService.class);
+    private final DbWriterPipelineMetrics metrics = mock(DbWriterPipelineMetrics.class);
     private final DbWriterKafkaConsumer consumer = new DbWriterKafkaConsumer(
             objectMapper,
-            dbWriterService
+            inbox, metrics
     );
 
     @Test
@@ -52,9 +56,10 @@ class DbWriterKafkaConsumerTest {
                 }
                 """;
 
+        when(inbox.receive(any())).thenReturn(DbWriterInboxService.Result.APPLIED);
         consumer.consume(new ConsumerRecord<>("news.event.v1", 1, 7L, "a-123", value));
 
-        verify(dbWriterService).handle(
+        verify(inbox).receive(
                 new DbWriterEvent(
                         "ARTICLE_ISSUE_ASSIGNED",
                         java.time.OffsetDateTime.parse("2026-09-03T06:40:02Z"),
@@ -64,5 +69,6 @@ class DbWriterKafkaConsumerTest {
                                 .put("similarity", 0.94)
                 )
         );
+        verify(metrics).record("applied");
     }
 }

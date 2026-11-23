@@ -59,6 +59,8 @@ services:
     image: prom/prometheus:v3.13.1
     container_name: news-prometheus
     restart: unless-stopped
+    extra_hosts:
+      - "backend-metrics:${BACKEND_METRICS_HOST:-127.0.0.1}"
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.path=/prometheus
@@ -69,7 +71,36 @@ services:
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - ./prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - ./prometheus/alert_rules.test.yml:/etc/prometheus/alert_rules.test.yml:ro
       - prometheus-data:/prometheus
+    networks:
+      - news-network
+
+  alertmanager-config:
+    image: python:3.12-alpine
+    restart: "no"
+    environment:
+      ALERT_WEBHOOK_URL: ${ALERT_WEBHOOK_URL:-}
+    volumes:
+      - ./alertmanager/render_config.py:/render_config.py:ro
+      - alertmanager-config:/config
+    command: ["python", "/render_config.py"]
+
+  alertmanager:
+    image: prom/alertmanager:v0.28.1
+    container_name: news-alertmanager
+    restart: unless-stopped
+    user: "65534:65534"
+    command:
+      - --config.file=/etc/alertmanager/alertmanager.yml
+      - --storage.path=/alertmanager
+      - --cluster.listen-address=
+    volumes:
+      - alertmanager-config:/etc/alertmanager:ro
+      - alertmanager-data:/alertmanager
+    depends_on:
+      alertmanager-config:
+        condition: service_completed_successfully
     networks:
       - news-network
 
@@ -100,7 +131,7 @@ services:
     command:
       - --kafka.server=kafka:29092
       - --topic.filter=^news\..*
-      - --group.filter=^(nlp-worker-v1|news-.*-hdfs-.*)$
+      - --group.filter=^(nlp-worker-v1|news-.*-hdfs-.*|db-writer-.*)$
     networks:
       - news-network
 
@@ -119,6 +150,8 @@ services:
       - news-network
 
 volumes:
+  alertmanager-config:
+  alertmanager-data:
   alloy-data:
   prometheus-data:
     name: news-prometheus-data

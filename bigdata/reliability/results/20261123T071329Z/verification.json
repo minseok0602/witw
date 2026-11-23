@@ -1,0 +1,114 @@
+{
+  "experiment_id": "20261123T071329Z",
+  "verified_at_utc": "2026-11-23T07:20:49.242135+00:00",
+  "input_unique_articles": 4100,
+  "collector_manifests": [
+    {
+      "file": "r4-ca-out-071329-inputs.jsonl",
+      "sha256": "e2330690913de022dc9bc9914d8dfff5cc0deb5587299e91ef71b8a24ca3a941"
+    },
+    {
+      "file": "r4-ca-ack-071329-inputs.jsonl",
+      "sha256": "b4103a179625bbd239da7c4c330c470be4c9febce7e799dd9daf9b7e8e139938"
+    },
+    {
+      "file": "r4-cb-out-071329-inputs.jsonl",
+      "sha256": "44bc7780669669a128aa349a77254a4ef3ea7dc45307f709831ad2500fa22600"
+    },
+    {
+      "file": "r4-cb-ack-071329-inputs.jsonl",
+      "sha256": "b1b8c495f4a31e822fcf7be3165b92b21bb3725a0fa9a860042e8700b6aea35e"
+    }
+  ],
+  "versions": {
+    "before": {
+      "long-network": {
+        "input": 100,
+        "persisted": 100,
+        "missing_ids": [],
+        "unexpected_ids": [],
+        "content_mismatch_ids": [],
+        "assignment_mismatch_ids": []
+      },
+      "r4-ca-ack-071329": {
+        "input": 1000,
+        "persisted": 1000,
+        "missing_ids": [],
+        "unexpected_ids": [],
+        "content_mismatch_ids": [],
+        "assignment_mismatch_ids": []
+      },
+      "r4-ca-out-071329": {
+        "input": 1000,
+        "persisted": 1000,
+        "missing_ids": [],
+        "unexpected_ids": [],
+        "content_mismatch_ids": [],
+        "assignment_mismatch_ids": []
+      },
+      "r4-cb-ack-071329": {
+        "input": 1000,
+        "persisted": 1000,
+        "missing_ids": [],
+        "unexpected_ids": [],
+        "content_mismatch_ids": [],
+        "assignment_mismatch_ids": []
+      },
+      "r4-cb-out-071329": {
+        "input": 1000,
+        "persisted": 999,
+        "missing_ids": [
+          "f89b01d77886ef5c93e4aac8b1003c00e2da53bf23e58cfd49dcd7e37e981cbc"
+        ],
+        "unexpected_ids": [],
+        "content_mismatch_ids": [],
+        "assignment_mismatch_ids": []
+      }
+    },
+    "after": {
+      "long-network": {
+        "input": 100,
+        "persisted": 100,
+        "missing_ids": [],
+        "unexpected_ids": [],
+        "content_mismatch_ids": [],
+        "assignment_mismatch_ids": []
+      },
+      "r4-ca-ack-071329": {
+        "input": 1000,
+        "persisted": 1000,
+        "missing_ids": [],
+        "unexpected_ids": [],
+        "content_mismatch_ids": [],
+        "assignment_mismatch_ids": []
+      },
+      "r4-ca-out-071329": {
+        "input": 1000,
+        "persisted": 1000,
+        "missing_ids": [],
+        "unexpected_ids": [],
+        "content_mismatch_ids": [],
+        "assignment_mismatch_ids": []
+      },
+      "r4-cb-ack-071329": {
+        "input": 1000,
+        "persisted": 1000,
+        "missing_ids": [],
+        "unexpected_ids": [],
+        "content_mismatch_ids": [],
+        "assignment_mismatch_ids": []
+      },
+      "r4-cb-out-071329": {
+        "input": 1000,
+        "persisted": 999,
+        "missing_ids": [
+          "f89b01d77886ef5c93e4aac8b1003c00e2da53bf23e58cfd49dcd7e37e981cbc"
+        ],
+        "unexpected_ids": [],
+        "content_mismatch_ids": [],
+        "assignment_mismatch_ids": []
+      }
+    }
+  },
+  "raw_body_hash_mismatches": {}
+}

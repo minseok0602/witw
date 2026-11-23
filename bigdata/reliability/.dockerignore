@@ -1,0 +1,5 @@
+**/*
+!.generated/
+!.generated/backend-before.jar
+!.generated/backend-after.jar
+!Backend.Dockerfile

@@ -73,7 +73,8 @@ public class KafkaErrorHandlerConfig {
 
         // 아래 예외는 재시도해도 결과가 같다. 즉시 DLT로 보내 파티션 지연을 막는다.
         //  - IllegalArgumentException : 역직렬화 실패, 페이로드 규격 위반
-        //  - IllegalStateException    : country/theme 미등록, ISSUE_CREATE의 기사 미존재
+        //  - IllegalStateException    : country/theme 미등록, DB 쓰기 불변식 위반
+        // 기사/이슈 도착 순서 차이는 DbWriterInboxService가 PENDING으로 보존한다.
         handler.addNotRetryableExceptions(
                 IllegalArgumentException.class,
                 IllegalStateException.class

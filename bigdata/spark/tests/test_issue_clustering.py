@@ -115,6 +115,11 @@ class IssueEventTest(unittest.TestCase):
             event["payload"]["first_seen_at"], "2026-09-03T05:00:00+09:00"
         )
         self.assertEqual(key, cluster_event_key(self.cluster))
+        retry = json.loads(build_issue_events(
+            self.cluster, GeneratedIssue(name="다시 생성된 다른 이름"), "2026-09-04T06:50:00Z"
+        )[0][1])
+        self.assertEqual(event["event_id"], key)
+        self.assertEqual(retry["event_id"], event["event_id"])
 
     def test_merges_same_theme_and_normalized_name_before_event_creation(self):
         first = ClusterCandidate(

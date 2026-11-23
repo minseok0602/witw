@@ -1,0 +1,157 @@
+rule_files:
+  - alerts.yml
+evaluation_interval: 1m
+tests:
+  - interval: 1m
+    input_series:
+      - series: 'witw_collector_started_timestamp_seconds{job="collector"}'
+        values: '1+0x40'
+      - series: 'witw_collector_last_round_timestamp_seconds{job="collector"}'
+        values: '0+0x40'
+    alert_rule_test:
+      - eval_time: 33m
+        alertname: CollectorStartupStalled
+        exp_alerts:
+          - exp_labels:
+              severity: critical
+              job: collector
+            exp_annotations:
+              summary: "Collector has not completed its first round in 30 minutes"
+  - interval: 1m
+    input_series:
+      - series: 'witw_collector_outbox_oldest_age_seconds{job="collector",instance="collector:9103"}'
+        values: '1000+0x4 0+0x5'
+    alert_rule_test:
+      - eval_time: 1m
+        alertname: CollectorDeliveryStalled
+        exp_alerts: []
+      - eval_time: 3m
+        alertname: CollectorDeliveryStalled
+        exp_alerts:
+          - exp_labels:
+              severity: critical
+              job: collector
+              instance: collector:9103
+            exp_annotations:
+              summary: "Fetched articles are waiting for Kafka acknowledgement"
+              description: "The oldest durable outbox entry has waited 1000 seconds. Payloads remain in SQLite."
+      - eval_time: 6m
+        alertname: CollectorDeliveryStalled
+        exp_alerts: []
+  - interval: 1m
+    input_series:
+      - series: 'up{job="collector",instance="collector:9103"}'
+        values: '0+0x5'
+      - series: 'up{job="backend-pipeline",instance="backend:9091"}'
+        values: '0+0x5'
+      - series: 'up{job="alertmanager",instance="alertmanager:9093"}'
+        values: '0+0x5'
+    alert_rule_test:
+      - eval_time: 3m
+        alertname: CollectorMetricsUnavailable
+        exp_alerts:
+          - exp_labels: {severity: critical, job: collector, instance: "collector:9103"}
+            exp_annotations: {summary: "Collector delivery metrics are unavailable"}
+      - eval_time: 3m
+        alertname: DbWriterMetricsUnavailable
+        exp_alerts:
+          - exp_labels: {severity: critical, job: backend-pipeline, instance: "backend:9091"}
+            exp_annotations: {summary: "Backend pipeline metrics are unavailable"}
+      - eval_time: 3m
+        alertname: AlertmanagerUnavailable
+        exp_alerts:
+          - exp_labels: {severity: critical, job: alertmanager, instance: "alertmanager:9093"}
+            exp_annotations: {summary: "External alert routing is unavailable"}
+  - interval: 1m
+    input_series:
+      - series: 'alertmanager_notifications_failed_total{integration="webhook",instance="alertmanager:9093"}'
+        values: '0+1x15'
+    alert_rule_test:
+      - eval_time: 12m
+        alertname: AlertWebhookDeliveryFailed
+        exp_alerts:
+          - exp_labels: {severity: critical, integration: webhook, instance: "alertmanager:9093"}
+            exp_annotations: {summary: "Alertmanager could not deliver webhook notifications"}
+  - interval: 1m
+    input_series:
+      - series: 'witw_dbwriter_pending_oldest_age_seconds{job="backend-pipeline"}'
+        values: '400+0x5'
+    alert_rule_test:
+      - eval_time: 3m
+        alertname: DbWriterDependenciesStalled
+        exp_alerts:
+          - exp_labels:
+              severity: critical
+              job: backend-pipeline
+            exp_annotations:
+              summary: "DB events are waiting for missing article or issue dependencies"
+              description: "Oldest dependency wait is 400 seconds. Inspect pipeline_event_inbox before replaying."
+  - interval: 1m
+    input_series:
+      - series: 'kafka_topic_partition_current_offset{topic="news.event.v1.dlt",partition="0"}'
+        values: '1+0x4'
+      - series: 'kafka_topic_partition_oldest_offset{topic="news.event.v1.dlt",partition="0"}'
+        values: '0+0x4'
+    alert_rule_test:
+      - eval_time: 2m
+        alertname: DbWriterDeadLettersPresent
+        exp_alerts:
+          - exp_labels:
+              severity: critical
+            exp_annotations:
+              summary: "DB Writer dead-letter records require investigation"
+              description: "DLT retains 1 records. Confirm DB application before replay; retention alone is not a recovery acknowledgement."
+  - interval: 1m
+    input_series:
+      - series: 'kafka_consumergroup_lag{consumergroup="db-writer-prod-v1",topic="news.event.v1",partition="0"}'
+        values: '10+0x15'
+      - series: 'kafka_consumergroup_current_offset{consumergroup="db-writer-prod-v1",topic="news.event.v1",partition="0"}'
+        values: '100+0x15'
+    alert_rule_test:
+      - eval_time: 10m
+        alertname: DbWriterCommitStalled
+        exp_alerts:
+          - exp_labels:
+              severity: critical
+            exp_annotations:
+              summary: "DB Writer has pending Kafka records but no commit progress"
+  - interval: 1m
+    input_series:
+      - series: 'up{job="kafka-offsets"}'
+        values: '1+0x5'
+    alert_rule_test:
+      - eval_time: 3m
+        alertname: DbWriterDisconnected
+        exp_alerts:
+          - exp_labels:
+              severity: critical
+            exp_annotations:
+              summary: "No DB Writer consumer is connected"
+  - interval: 1m
+    input_series:
+      - series: 'up{job="kafka-offsets"}'
+        values: '0+0x5'
+    alert_rule_test:
+      - eval_time: 3m
+        alertname: DbWriterDisconnected
+        exp_alerts: []
+  - interval: 1m
+    input_series:
+      - series: 'witw_collector_outbox_oldest_age_seconds'
+        values: '0+0x5'
+      - series: 'witw_dbwriter_pending_oldest_age_seconds'
+        values: '0+0x5'
+      - series: 'kafka_topic_partition_current_offset{topic="news.event.v1.dlt",partition="0"}'
+        values: '0+0x5'
+      - series: 'kafka_topic_partition_oldest_offset{topic="news.event.v1.dlt",partition="0"}'
+        values: '0+0x5'
+    alert_rule_test:
+      - eval_time: 3m
+        alertname: CollectorDeliveryStalled
+        exp_alerts: []
+      - eval_time: 3m
+        alertname: DbWriterDependenciesStalled
+        exp_alerts: []
+      - eval_time: 3m
+        alertname: DbWriterDeadLettersPresent
+        exp_alerts: []

@@ -1,0 +1,312 @@
+name: witw-reliability-live
+x-backend-env:
+  SPRING_PROFILES_ACTIVE: prod
+  SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+  POSTGRESQL_USER: postgres
+  POSTGRESQL_PASSWORD: reliability_only
+  VALKEY_HOST: redis
+  VALKEY_HOST_PORT: '6379'
+  MAIL_USERNAME: lab
+  MAIL_APP_PASSWORD: lab
+  SPRING_MAIL_HOST: receiver
+  SPRING_MAIL_PORT: '3025'
+  ANALYSIS_SCHEDULER_ENABLED: 'false'
+  NOTIFICATION_SCHEDULER_ENABLED: 'false'
+  WITW_ISSUE_HEAT_INITIAL_DELAY_MS: '3600000'
+  WITW_ISSUE_HEAT_REFRESH_MS: '3600000'
+  SSAFY_CLIENT_ID: lab
+  SSAFY_CLIENT_SECRET: lab
+  SSAFY_REDIRECT_URI: http://receiver/disabled
+  GMS_API_KEY: ''
+  GMS_BASE_URL: http://receiver/disabled
+  SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_TIME_ZONE: Asia/Seoul
+services:
+  kafka:
+    image: apache/kafka:4.3.1
+    user: root
+    cpus: 2
+    mem_limit: 1536m
+    environment:
+      KAFKA_NODE_ID: '1'
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: INTERNAL://:29092,EXTERNAL://:9092,ISOLATED://:39092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://127.0.0.1:39992,ISOLATED://toxiproxy:39092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,ISOLATED:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: '1'
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: '1'
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: '1'
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: '0'
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      KAFKA_HEAP_OPTS: -Xms512m -Xmx1024m
+    ports:
+    - 127.0.0.1:39992:9092
+    volumes:
+    - kafka-data:/var/lib/kafka/data
+    networks:
+    - lab
+    - control
+  postgres:
+    image: postgres:17-alpine
+    cpus: 2
+    mem_limit: 1024m
+    environment:
+      POSTGRES_PASSWORD: reliability_only
+      POSTGRES_DB: postgres
+    command:
+    - postgres
+    - -c
+    - shared_buffers=128MB
+    - -c
+    - max_connections=100
+    ports:
+    - 127.0.0.1:39932:5432
+    volumes:
+    - postgres-data:/var/lib/postgresql/data
+    networks:
+    - lab
+    - control
+  redis:
+    image: redis:7-alpine
+    cpus: 0.5
+    mem_limit: 256m
+    networks:
+    - lab
+  backend-before:
+    image: witw-reliability-backend:before
+    cpus: 2
+    mem_limit: 1536m
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      POSTGRESQL_USER: postgres
+      POSTGRESQL_PASSWORD: reliability_only
+      VALKEY_HOST: redis
+      VALKEY_HOST_PORT: '6379'
+      MAIL_USERNAME: lab
+      MAIL_APP_PASSWORD: lab
+      SPRING_MAIL_HOST: receiver
+      SPRING_MAIL_PORT: '3025'
+      ANALYSIS_SCHEDULER_ENABLED: 'false'
+      NOTIFICATION_SCHEDULER_ENABLED: 'false'
+      WITW_ISSUE_HEAT_INITIAL_DELAY_MS: '3600000'
+      WITW_ISSUE_HEAT_REFRESH_MS: '3600000'
+      SSAFY_CLIENT_ID: lab
+      SSAFY_CLIENT_SECRET: lab
+      SSAFY_REDIRECT_URI: http://receiver/disabled
+      GMS_API_KEY: ''
+      GMS_BASE_URL: http://receiver/disabled
+      SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_TIME_ZONE: Asia/Seoul
+      POSTGRESQL_URL: jdbc:postgresql://postgres:5432/witw_before
+      KAFKA_CONSUMER_GROUP_ID: db-writer-live-before
+    networks:
+    - lab
+  backend-after:
+    image: witw-reliability-backend:after
+    cpus: 2
+    mem_limit: 1536m
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      POSTGRESQL_USER: postgres
+      POSTGRESQL_PASSWORD: reliability_only
+      VALKEY_HOST: redis
+      VALKEY_HOST_PORT: '6379'
+      MAIL_USERNAME: lab
+      MAIL_APP_PASSWORD: lab
+      SPRING_MAIL_HOST: receiver
+      SPRING_MAIL_PORT: '3025'
+      ANALYSIS_SCHEDULER_ENABLED: 'false'
+      NOTIFICATION_SCHEDULER_ENABLED: 'false'
+      WITW_ISSUE_HEAT_INITIAL_DELAY_MS: '3600000'
+      WITW_ISSUE_HEAT_REFRESH_MS: '3600000'
+      SSAFY_CLIENT_ID: lab
+      SSAFY_CLIENT_SECRET: lab
+      SSAFY_REDIRECT_URI: http://receiver/disabled
+      GMS_API_KEY: ''
+      GMS_BASE_URL: http://receiver/disabled
+      SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_TIME_ZONE: Asia/Seoul
+      POSTGRESQL_URL: jdbc:postgresql://postgres:5432/witw_after
+      KAFKA_CONSUMER_GROUP_ID: db-writer-live-after
+    networks:
+    - lab
+  toxiproxy:
+    image: ghcr.io/shopify/toxiproxy:2.12.0
+    cpus: 0.5
+    mem_limit: 128m
+    ports:
+    - 127.0.0.1:38474:8474
+    networks:
+    - lab
+    - control
+  collector-long:
+    image: codex-pipeline-collector:verify
+    cpus: 1
+    mem_limit: 512m
+    entrypoint:
+    - python
+    - -u
+    - /lab/collector_driver.py
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: toxiproxy:39092
+      LAB_VARIANT: after
+      LAB_RUN: long-network
+      LAB_COUNT: '100'
+      LAB_POLL_SECONDS: '600'
+      LAB_GATE: 'true'
+    volumes:
+    - ./:/lab:ro
+    - ../collector:/collector:ro
+    - ./.generated/state:/state
+    networks:
+    - lab
+  collector-case:
+    image: codex-pipeline-collector:verify
+    cpus: 1
+    mem_limit: 512m
+    entrypoint:
+    - python
+    - -u
+    - /lab/collector_driver.py
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      LAB_VARIANT: ${LAB_VARIANT:-after}
+      LAB_RUN: ${LAB_RUN:-case}
+      LAB_COUNT: ${LAB_COUNT:-1000}
+      LAB_FAILPOINT: ${LAB_FAILPOINT:-}
+      LAB_POLL_SECONDS: '600'
+      LAB_DB_ROOT: /persist
+    volumes:
+    - ./:/lab:ro
+    - ../collector:/collector:ro
+    - ./.generated/state:/state
+    - collector-storage:/persist
+    networks:
+    - lab
+  nlp-replay:
+    image: codex-pipeline-collector:verify
+    cpus: 1
+    mem_limit: 512m
+    entrypoint:
+    - python
+    - -u
+    - /lab/nlp_replay.py
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      KAFKA_CONSUMER_GROUP: nlp-worker-live
+    volumes:
+    - ./:/lab:ro
+    - ../nlp-worker:/nlp:ro
+    - ./.generated/state:/state
+    networks:
+    - lab
+  spark:
+    image: witw-reliability-spark:verify
+    cpus: 2
+    mem_limit: 3072m
+    user: root
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      POSTGRESQL_URL: jdbc:postgresql://postgres:5432/witw_after
+      POSTGRESQL_USER: postgres
+      POSTGRESQL_PASSWORD: reliability_only
+      SPARK_CHECKPOINT_LOCATION: file:///state/spark-checkpoint
+      SPARK_METRICS_HOST: 0.0.0.0
+      SPARK_METRICS_PORT: '9102'
+      SPARK_LOCAL_IP: spark
+      SPARK_LOG_LEVEL: ERROR
+    volumes:
+    - ../spark/apps:/opt/spark/apps:ro
+    - ./.generated/state:/state
+    entrypoint:
+    - /opt/spark/bin/spark-submit
+    command:
+    - --master
+    - local[2]
+    - --driver-memory
+    - 1g
+    - --conf
+    - spark.sql.shuffle.partitions=4
+    - --conf
+    - spark.default.parallelism=4
+    - --py-files
+    - /opt/spark/apps/event_identity.py,/opt/spark/apps/article_event.py,/opt/spark/apps/issue_matching.py,/opt/spark/apps/streaming_metrics.py
+    - /opt/spark/apps/enriched_article_stream.py
+    networks:
+    - lab
+  receiver:
+    image: codex-pipeline-collector:verify
+    cpus: 0.5
+    mem_limit: 128m
+    entrypoint:
+    - python
+    - -u
+    - /lab/receiver.py
+    volumes:
+    - ./:/lab:ro
+    - ./.generated/state:/state
+    ports:
+    - 127.0.0.1:39904:8080
+    networks:
+    - lab
+    - control
+  prometheus:
+    image: prom/prometheus:v3.13.1
+    cpus: 0.5
+    mem_limit: 512m
+    command:
+    - --config.file=/etc/prometheus/prometheus.yml
+    - --storage.tsdb.retention.time=1d
+    volumes:
+    - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    - ../monitoring/prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
+    ports:
+    - 127.0.0.1:39900:9090
+    networks:
+    - lab
+    - control
+  alertmanager:
+    image: prom/alertmanager:v0.28.1
+    cpus: 0.25
+    mem_limit: 128m
+    command:
+    - --config.file=/etc/alertmanager/alertmanager.yml
+    - --cluster.listen-address=
+    volumes:
+    - ./.generated/alertmanager.json:/etc/alertmanager/alertmanager.yml:ro
+    ports:
+    - 127.0.0.1:39901:9093
+    networks:
+    - lab
+    - control
+  kafka-exporter:
+    image: danielqsj/kafka-exporter:v1.9.0
+    cpus: 0.5
+    mem_limit: 256m
+    command:
+    - --kafka.server=kafka:29092
+    - --topic.filter=^news\..*
+    - --group.filter=^(nlp-worker-live|db-writer-live-.*)$
+    networks:
+    - lab
+networks:
+  lab:
+    internal: true
+    labels:
+      codex.task: witw-reliability-live
+  control:
+    labels:
+      codex.task: witw-reliability-live
+volumes:
+  kafka-data:
+    labels:
+      codex.task: witw-reliability-live
+  postgres-data:
+    labels:
+      codex.task: witw-reliability-live
+  collector-storage:
+    labels:
+      codex.task: witw-reliability-live

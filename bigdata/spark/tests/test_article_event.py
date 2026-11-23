@@ -9,6 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "apps"))
 from article_event import (  # noqa: E402
     InvalidEnrichedArticle,
     build_article_upsert_event,
+    transform_kafka_message,
 )
 
 
@@ -31,6 +32,15 @@ class ArticleEventTest(unittest.TestCase):
                 "processed_at": "2026-09-04T03:20:15Z",
             },
         }
+
+    def test_replayed_article_keeps_id_but_corrected_payload_gets_new_id(self):
+        first = json.loads(transform_kafka_message(json.dumps(self.article))[1])
+        self.article["nlp_worker_data"]["processed_at"] = "2026-09-05T03:20:15Z"
+        replay = json.loads(transform_kafka_message(json.dumps(self.article))[1])
+        self.assertEqual(first["event_id"], replay["event_id"])
+        self.article["nlp_worker_data"]["sentiment"]["score"] = 75.0
+        corrected = json.loads(transform_kafka_message(json.dumps(self.article))[1])
+        self.assertNotEqual(first["event_id"], corrected["event_id"])
 
     def test_article_upsert_contains_theme_relevance_score(self):
         event = build_article_upsert_event(self.article)

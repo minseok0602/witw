@@ -1,0 +1,4 @@
+confluent-kafka==2.15.0
+psycopg[binary]==3.3.9
+requests==2.34.2
+PyYAML==6.0.3

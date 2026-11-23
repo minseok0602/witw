@@ -1,0 +1,26 @@
+{
+  "repetitions": 1,
+  "articles_per_trial": 1000,
+  "collector_pause_protocol": "blocking-trace-v2",
+  "collector_observation_limit_seconds": 600,
+  "db_failpoint_filters_exact_event_id": true,
+  "db_recovery_fences_committed_offset": true,
+  "lab_source_sha256": {
+    "capture_evidence.py": "ea83996166f6b9462ef747e71743e9f21845f6566b9b0858a97f237e007cb826",
+    "collector_driver.py": "6b9591d13e7c140d045312fd045adea6d78991664071877fda538a054be544d9",
+    "fixtures.py": "a201a3e19884e04796d8af8af7582ae3128db1fe99ef9f4dad46b0e67667f2f5",
+    "init_lab.py": "3a4ac8041c66b6fe1593699b951b31d445999c33b84c0f5305c57593be0591c0",
+    "load_fixtures.py": "e4f4a231bedefc6704a18c183f7700cc138923d1f5100d70693d5253c5740332",
+    "load_soak.py": "882a255e5e33886c78ae75e43eaaa1f0f7d48a9b1e86a3385924241a1e27022f",
+    "make_report.py": "5185dc72e2673cb07b39765f07a06e7b576e94471d5cfe71777d4304e91b8664",
+    "nlp_replay.py": "d735e14cf6ba5307322bd7bbc2e415efba809a5da80a24fd3b1019c5021519ee",
+    "observe_notifications.py": "b72c8734f24b06184bc2f0d54be78ddffde5fe0e433f16689d0f8143c2b3daf1",
+    "prepare.py": "2865e4f6e94d5f4a2c3ddadbaf639e0705e8352bf00e3bfb5f6032e2201e108d",
+    "receiver.py": "f58b737597d92fdaa157023c6fa40fc650053abc43eccb7d53d8a28d2300647e",
+    "run_experiments.py": "2683ba70a8be7636d69b712e1d0eac4e28d77e683f5095ec12dbb77042c06e22",
+    "summarize.py": "51197b41722f3191098ada1348b6f3667836d94898a8905cfa1aaf9bb6d87d63",
+    "verify_evidence.py": "69ee3134cc2b5abb7e2fd46bf151ed1b41faec7dca13806e4bfb461ea635beb0",
+    "wait_pipeline_idle.py": "a6fec1bb857e27f82fb961af8264cae5d1b26cda2079662bcd68201f9e290be1",
+    "watch_long.py": "79e89c4bec88e3058c7f0e6be7f4e0a8bef13373d67eddc753087d8660ff7be9"
+  }
+}

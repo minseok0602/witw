@@ -1,0 +1,63 @@
+{
+  "all_stages_drained": true,
+  "latest_offsets": {
+    "news.raw.v1": {
+      "0": 4471,
+      "1": 4410,
+      "2": 4513,
+      "3": 4475,
+      "4": 4544,
+      "5": 4332
+    },
+    "news.enriched.v1": {
+      "0": 4471,
+      "1": 4410,
+      "2": 4513,
+      "3": 4475,
+      "4": 4544,
+      "5": 4332
+    },
+    "news.event.v1": {
+      "0": 23010,
+      "1": 22811,
+      "2": 22789
+    }
+  },
+  "committed_positions": {
+    "nlp-worker-live": {
+      "5": 4332,
+      "0": 4471,
+      "2": 4513,
+      "4": 4544,
+      "1": 4410,
+      "3": 4475
+    },
+    "db-writer-live-before": {
+      "0": 23010,
+      "2": 22789,
+      "1": 22811
+    },
+    "db-writer-live-after": {
+      "2": 22789,
+      "0": 23010,
+      "1": 22811
+    },
+    "spark-committed-batch": {
+      "0": 4471,
+      "1": 4410,
+      "2": 4513,
+      "3": 4475,
+      "4": 4544,
+      "5": 4332
+    }
+  },
+  "lag": {
+    "nlp-worker-live": 0,
+    "spark-committed-batch": 0,
+    "db-writer-live-before": 0,
+    "db-writer-live-after": 0
+  },
+  "after_pending_inbox": 0,
+  "spark_committed_batch": 40,
+  "three_consecutive_samples_seconds_apart": 2
+}

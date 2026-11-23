@@ -1,0 +1,26 @@
+{
+  "run_id": "witw-rel-20261123-105044-35b97a",
+  "scope": "Observability verification only; remaining EC2 fault/performance/host trials are still running",
+  "environment": {
+    "instance_type": "m7i.xlarge",
+    "nodes": 3,
+    "vcpus_each": 4,
+    "memory_gib_each": 16,
+    "region": "ap-northeast-2",
+    "grafana_cpus": 0.25,
+    "grafana_memory_mib": 384,
+    "grafana_started_utc": "2026-11-23T11:37:20Z"
+  },
+  "preflight_finding": "Prometheus config bind mount was mode 0600 and unreadable to nobody. Failure logs preserved. Fixed to 0644; Prometheus ready at 11:39:24 UTC, before the 15-minute outbox threshold. The first 14 minutes of the cloud run have no Prometheus observations. This is not uninterrupted monitoring coverage.",
+  "validation": {
+    "promtool_rules": "passed",
+    "monitoring_config_unit_tests": 3,
+    "linux_ec2_support_unit_tests": 11,
+    "grafana_api_queries": 12,
+    "actual_http_receiver_statuses": [
+      "firing",
+      "resolved"
+    ],
+    "real_external_notification_channel": "not configured"
+  }
+}

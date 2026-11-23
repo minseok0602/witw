@@ -1,0 +1,284 @@
+{
+  "result_directories": [
+    "20261123T063135Z",
+    "20261123T071329Z"
+  ],
+  "qualified_trials": 27,
+  "excluded_trials": [
+    {
+      "run": "r1-cb-out-063135",
+      "reason": "Unverified namespace PID 1 self-SIGSTOP boundary"
+    },
+    {
+      "run": "r1-cb-ack-063135",
+      "reason": "Unverified namespace PID 1 self-SIGSTOP boundary"
+    },
+    {
+      "run": "r1-ca-out-063135",
+      "reason": "Unverified namespace PID 1 self-SIGSTOP boundary"
+    },
+    {
+      "run": "r1-ca-ack-063135",
+      "reason": "Unverified namespace PID 1 self-SIGSTOP boundary"
+    }
+  ],
+  "collector_final_counts_source": "Independent verification.json after all-stage pipeline drain; summary.json preserves original bounded per-trial snapshots",
+  "groups": {
+    "duplicate_events": {
+      "trials": 3,
+      "runs": [
+        "r1-dup-063135",
+        "r2-dup-063135",
+        "r3-dup-063135"
+      ],
+      "input_articles": 3000,
+      "versions": {
+        "before": {
+          "persisted_articles": 3000,
+          "missing_ids": 0,
+          "incorrect_assignments": 0,
+          "committed_issue_writes": 360
+        },
+        "after": {
+          "persisted_articles": 3000,
+          "missing_ids": 0,
+          "incorrect_assignments": 0,
+          "committed_issue_writes": 300
+        }
+      },
+      "dlt_records": 0
+    },
+    "reordered_dependencies": {
+      "trials": 3,
+      "runs": [
+        "r1-ord-063135",
+        "r2-ord-063135",
+        "r3-ord-063135"
+      ],
+      "input_articles": 3000,
+      "versions": {
+        "before": {
+          "persisted_articles": 3000,
+          "missing_ids": 0,
+          "incorrect_assignments": 3000,
+          "committed_issue_writes": 0
+        },
+        "after": {
+          "persisted_articles": 3000,
+          "missing_ids": 0,
+          "incorrect_assignments": 0,
+          "committed_issue_writes": 300
+        }
+      },
+      "dlt_records": 300
+    },
+    "db_precommit_sigkill": {
+      "trials": 3,
+      "runs": [
+        "r1-precommit-063135",
+        "r2-precommit-063135",
+        "r3-precommit-063135"
+      ],
+      "committed_issue_writes": {
+        "before": 3,
+        "after": 3
+      },
+      "restart_to_replay_seconds": {
+        "before": {
+          "n": 3,
+          "min": 40.135294600000634,
+          "median": 43.75208809999822,
+          "max": 50.33236240000042
+        },
+        "after": {
+          "n": 3,
+          "min": 43.24771659999897,
+          "median": 47.20488409999962,
+          "max": 49.82799729999897
+        }
+      }
+    },
+    "db_postcommit_sigkill": {
+      "trials": 3,
+      "runs": [
+        "r1-postcommit-063135",
+        "r2-postcommit-063135",
+        "r3-postcommit-063135"
+      ],
+      "committed_issue_writes": {
+        "before": 6,
+        "after": 3
+      },
+      "restart_to_replay_seconds": {
+        "before": {
+          "n": 3,
+          "min": 44.21117629999935,
+          "median": 44.224209700001666,
+          "max": 46.73395140000139
+        },
+        "after": {
+          "n": 3,
+          "min": 42.6996364000006,
+          "median": 44.21414960000038,
+          "max": 47.762496600000304
+        }
+      }
+    },
+    "database_unresponsive_40s": {
+      "trials": 3,
+      "runs": [
+        "r1-dbnet-063135",
+        "r2-dbnet-063135",
+        "r3-dbnet-063135"
+      ],
+      "input_articles": 3000,
+      "versions": {
+        "before": {
+          "persisted_articles": 3000,
+          "missing_ids": 0
+        },
+        "after": {
+          "persisted_articles": 3000,
+          "missing_ids": 0
+        }
+      },
+      "dlt_records": 0,
+      "restore_to_drained_seconds": {
+        "n": 3,
+        "min": 24.87748509999801,
+        "median": 25.413412400001107,
+        "max": 25.631371299998136
+      },
+      "fault_duration_seconds": {
+        "n": 3,
+        "min": 41.958098099999916,
+        "median": 42.06048390000069,
+        "max": 42.065222500001255
+      }
+    },
+    "collector_outbox_commit_sigkill:after": {
+      "trials": 3,
+      "runs": [
+        "r2-ca-out-063135",
+        "r3-ca-out-063135",
+        "r4-ca-out-071329"
+      ],
+      "input_articles": 3000,
+      "unique_kafka_articles": 3000,
+      "kafka_records": 3000,
+      "versions": {
+        "before": {
+          "persisted_articles": 3000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        },
+        "after": {
+          "persisted_articles": 3000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        }
+      },
+      "fault_to_initial_snapshot_seconds": {
+        "n": 3,
+        "min": 82.44433930000014,
+        "median": 82.95996889999878,
+        "max": 166.02674900000056
+      },
+      "initial_snapshots_with_mismatches": []
+    },
+    "collector_ack_before_delete_sigkill:after": {
+      "trials": 3,
+      "runs": [
+        "r2-ca-ack-063135",
+        "r3-ca-ack-063135",
+        "r4-ca-ack-071329"
+      ],
+      "input_articles": 3000,
+      "unique_kafka_articles": 3000,
+      "kafka_records": 3458,
+      "versions": {
+        "before": {
+          "persisted_articles": 3000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        },
+        "after": {
+          "persisted_articles": 3000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        }
+      },
+      "fault_to_initial_snapshot_seconds": {
+        "n": 3,
+        "min": 84.41576569999961,
+        "median": 85.8127542000002,
+        "max": 180.30351299999893
+      },
+      "initial_snapshots_with_mismatches": []
+    },
+    "collector_outbox_commit_sigkill:before": {
+      "trials": 3,
+      "runs": [
+        "r2-cb-out-063135",
+        "r3-cb-out-063135",
+        "r4-cb-out-071329"
+      ],
+      "input_articles": 3000,
+      "unique_kafka_articles": 2997,
+      "kafka_records": 2997,
+      "versions": {
+        "before": {
+          "persisted_articles": 2997,
+          "missing_ids": 3,
+          "payload_or_assignment_mismatches": 3
+        },
+        "after": {
+          "persisted_articles": 2997,
+          "missing_ids": 3,
+          "payload_or_assignment_mismatches": 3
+        }
+      },
+      "fault_to_initial_snapshot_seconds": {
+        "n": 3,
+        "min": 71.74780639999881,
+        "median": 149.18210790000012,
+        "max": 167.70033630000034
+      },
+      "initial_snapshots_with_mismatches": [
+        "r2-cb-out-063135",
+        "r3-cb-out-063135",
+        "r4-cb-out-071329"
+      ]
+    },
+    "collector_ack_before_delete_sigkill:before": {
+      "trials": 3,
+      "runs": [
+        "r2-cb-ack-063135",
+        "r3-cb-ack-063135",
+        "r4-cb-ack-071329"
+      ],
+      "input_articles": 3000,
+      "unique_kafka_articles": 3000,
+      "kafka_records": 3000,
+      "versions": {
+        "before": {
+          "persisted_articles": 3000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        },
+        "after": {
+          "persisted_articles": 3000,
+          "missing_ids": 0,
+          "payload_or_assignment_mismatches": 0
+        }
+      },
+      "fault_to_initial_snapshot_seconds": {
+        "n": 3,
+        "min": 75.2773159999997,
+        "median": 84.71211229999972,
+        "max": 162.01837199999864
+      },
+      "initial_snapshots_with_mismatches": []
+    }
+  }
+}

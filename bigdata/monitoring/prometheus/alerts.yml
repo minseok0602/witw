@@ -26,6 +26,113 @@ groups:
 
   - name: pipeline-alerts
     rules:
+      - alert: CollectorMetricsUnavailable
+        expr: up{job="collector"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Collector delivery metrics are unavailable"
+
+      - alert: CollectorDeliveryStalled
+        expr: witw_collector_outbox_oldest_age_seconds > 900
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Fetched articles are waiting for Kafka acknowledgement"
+          description: "The oldest durable outbox entry has waited {{ $value }} seconds. Payloads remain in SQLite."
+
+      - alert: CollectorRoundStalled
+        expr: (time() - witw_collector_last_round_timestamp_seconds > 1800) and (witw_collector_last_round_timestamp_seconds > 0)
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Collector has not completed a round in 30 minutes"
+
+      - alert: CollectorStartupStalled
+        expr: (time() - witw_collector_started_timestamp_seconds > 1800) and (witw_collector_last_round_timestamp_seconds == 0)
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Collector has not completed its first round in 30 minutes"
+
+      - alert: DbWriterMetricsUnavailable
+        expr: up{job="backend-pipeline"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Backend pipeline metrics are unavailable"
+
+      - alert: DbWriterDisconnected
+        expr: ((sum(kafka_consumergroup_members{consumergroup=~"db-writer-.*"}) or vector(0)) < 1) and on () (up{job="kafka-offsets"} == 1)
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "No DB Writer consumer is connected"
+
+      - alert: DbWriterCommitStalled
+        expr: (sum(kafka_consumergroup_lag{consumergroup=~"db-writer-.*",topic="news.event.v1"}) > 0) and on () (sum(deriv(kafka_consumergroup_current_offset{consumergroup=~"db-writer-.*",topic="news.event.v1"}[5m])) <= 0)
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "DB Writer has pending Kafka records but no commit progress"
+
+      - alert: DbWriterDependenciesStalled
+        expr: witw_dbwriter_pending_oldest_age_seconds > 300
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "DB events are waiting for missing article or issue dependencies"
+          description: "Oldest dependency wait is {{ $value }} seconds. Inspect pipeline_event_inbox before replaying."
+
+      - alert: DbWriterPendingMonitorStalled
+        expr: time() - witw_dbwriter_pending_snapshot_timestamp_seconds > 120
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "DB Writer pending-event monitor has stopped updating"
+
+      - alert: PipelineArticleDeliverySlow
+        expr: histogram_quantile(0.95, sum by (le) (rate(witw_dbwriter_article_delivery_seconds_bucket[10m]))) > 900
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Article discovery-to-DB delay exceeds 15 minutes at p95"
+
+      - alert: DbWriterDeadLettersPresent
+        expr: sum(kafka_topic_partition_current_offset{topic="news.event.v1.dlt"} - kafka_topic_partition_oldest_offset{topic="news.event.v1.dlt"}) > 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "DB Writer dead-letter records require investigation"
+          description: "DLT retains {{ $value }} records. Confirm DB application before replay; retention alone is not a recovery acknowledgement."
+
+      - alert: AlertmanagerUnavailable
+        expr: up{job="alertmanager"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "External alert routing is unavailable"
+
+      - alert: AlertWebhookDeliveryFailed
+        expr: increase(alertmanager_notifications_failed_total{integration="webhook"}[10m]) > 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Alertmanager could not deliver webhook notifications"
+
       - alert: ContainerMetricsUnavailable
         expr: up{job="cadvisor"} == 0
         for: 2m
@@ -45,7 +152,7 @@ groups:
           description: "{{ $labels.job }} target {{ $labels.instance }} has been down for 2 minutes."
 
       - alert: KafkaConsumerLagHigh
-        expr: sum by (consumergroup, topic) (kafka_consumergroup_lag{consumergroup=~"nlp-worker-v1|news-.*-hdfs-.*"}) > 100
+        expr: sum by (consumergroup, topic) (kafka_consumergroup_lag{consumergroup=~"nlp-worker-v1|news-.*-hdfs-.*|db-writer-.*"}) > 100
         for: 10m
         labels:
           severity: warning
@@ -54,7 +161,7 @@ groups:
           description: "{{ $labels.consumergroup }} on {{ $labels.topic }} has lag {{ $value }}."
 
       - alert: KafkaConsumerLagGrowing
-        expr: sum by (consumergroup, topic) (deriv(kafka_consumergroup_lag{consumergroup=~"nlp-worker-v1|news-.*-hdfs-.*"}[10m])) > 0.1
+        expr: sum by (consumergroup, topic) (deriv(kafka_consumergroup_lag{consumergroup=~"nlp-worker-v1|news-.*-hdfs-.*|db-writer-.*"}[10m])) > 0.1
         for: 10m
         labels:
           severity: warning
