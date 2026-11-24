@@ -1,0 +1,56 @@
+{
+  "region": "ap-northeast-2",
+  "instances": {
+    "m7i.xlarge": 1,
+    "m7i.large": 2
+  },
+  "main_runs": 720,
+  "extra_baseline_runs": 240,
+  "total_measured_full_runs": 960,
+  "local_exploration": [
+    {
+      "app": "A",
+      "source": "A-explore-v2",
+      "gross_local_s": 698.137024641037,
+      "startup_warmup_calibration_s": 46.7245306968689,
+      "variable_three_repeat_s": 651.4124939441681,
+      "full30_local_equivalent_s": 6560.84947013855,
+      "main_runs": 360,
+      "extra_baseline_runs": 0,
+      "measured_main_wall_s": 369.5213626380005,
+      "measured_extra_baseline_wall_s": 0
+    },
+    {
+      "app": "B",
+      "source": "B-explore-v3",
+      "gross_local_s": 167.10009360313416,
+      "startup_warmup_calibration_s": 32.222327709198,
+      "variable_three_repeat_s": 134.87776589393616,
+      "full30_local_equivalent_s": 1380.9999866485596,
+      "main_runs": 360,
+      "extra_baseline_runs": 240,
+      "measured_main_wall_s": 50.616483479000635,
+      "measured_extra_baseline_wall_s": 50.24521244799962
+    }
+  ],
+  "local_extrapolated_ab_full_h": 2.206069293551975,
+  "estimated_low_h": 2.6030346467759875,
+  "estimated_high_h": 7.91213858710395,
+  "ec2_usd_h": 0.4956,
+  "ebs_80gb_usd_h": 0.010133333333333334,
+  "ipv4_usd_h": 0.005,
+  "total_usd_h": 0.5107333333333334,
+  "fx_assumption": 1400,
+  "vat_assumption": 1.1,
+  "contingency_krw": 3000,
+  "c_integration_reserved_h": 2.0,
+  "estimated_low_krw": 2047.3631053722863,
+  "estimated_upper_krw": 9223.129088155812,
+  "budget_krw": 30000,
+  "proposed_auto_stop_hours": 10,
+  "deadline_cost_plus_contingency_krw": 10865.293333333335,
+  "paid_resources_created": false,
+  "ec2_experiment_executed": false,
+  "c_experiment_executed": false,
+  "caveat": "0.5x/2x local runtime scenarios, not a confidence interval. Data rotations, SMT, real network and C behavior remain uncertain."
+}

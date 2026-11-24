@@ -1,0 +1,59 @@
+{
+  "retrieved_utc": "2026-11-24T08:20:22.235146+00:00",
+  "region": "Asia Pacific (Seoul)",
+  "region_code": "ap-northeast-2",
+  "currency": "USD",
+  "purchase": "Linux OnDemand Shared tenancy",
+  "ec2_source": "https://b0.p.awsstatic.com/pricing/2.0/meteredUnitMaps/ec2/USD/current/ec2.json",
+  "ebs_source": "https://b0.p.awsstatic.com/pricing/2.0/meteredUnitMaps/ec2/USD/current/ebs.json",
+  "ec2_manifest": {
+    "serviceId": "ec2",
+    "accessType": "publish",
+    "esIndex": "plc-ec2-usd-20261123171005",
+    "hawkFilePublicationDate": "2026-11-23T17:10:05Z",
+    "ETLIngestionTriggerDate": "2026-11-23T17:10:05Z",
+    "currencyCode": "USD",
+    "source": "ec2",
+    "isMapped": "true"
+  },
+  "ebs_manifest": {
+    "serviceId": "ec2",
+    "accessType": "publish",
+    "source": "ebs",
+    "currencyCode": "USD",
+    "hawkFilePublicationDate": "2026-11-23T17:10:05Z",
+    "ETLIngestionTriggerDate": "2026-11-23T17:10:05Z",
+    "esIndex": "plc-ec2-usd-20261123171005",
+    "queryConfig": "public/f9970faf-7a37-5686-95e8-18af944f3f99/2",
+    "isMapped": "true"
+  },
+  "ec2": {
+    "c7i.large": {
+      "rateCode": "TTVRCYNEPCXHDNYH.JRTCKXETXF.6YS6EN2CT7",
+      "price": "0.1008000000",
+      "RegionlessRateCode": "09fyjtyujceU4sZkuWMgLr0EW7-K66dXVrChCDu5qK8"
+    },
+    "c7i.xlarge": {
+      "rateCode": "FHEDA64W9JAYPX9U.JRTCKXETXF.6YS6EN2CT7",
+      "price": "0.2016000000",
+      "RegionlessRateCode": "qBQVGP7KB9R9_HFHC6NNo0UxXYsD-wCRCDzTTOi79eA"
+    },
+    "c7i.2xlarge": {
+      "rateCode": "C8YNDY6DZQZ2Z7Q4.JRTCKXETXF.6YS6EN2CT7",
+      "price": "0.4032000000",
+      "RegionlessRateCode": "ktQ6nx6v5juuWRa2sBYBpyyBNxm3bM7tKo3JapD7T0M"
+    },
+    "c7i.4xlarge": {
+      "rateCode": "BPHKZFPKVKXBWJYV.JRTCKXETXF.6YS6EN2CT7",
+      "price": "0.8064000000",
+      "RegionlessRateCode": "fuvQszPAt0UuAr35j4g1Ef2B57FkO9cfTFP_BQk9Evo"
+    }
+  },
+  "ebs_gp3": {
+    "rateCode": "MTK7D9SGKGYR3JD6.JRTCKXETXF.6YS6EN2CT7",
+    "price": "0.0912000000",
+    "RegionlessRateCode": "rfOvvXHDAJRZK8rCe8ThxmpU_7SjA3m6T5_yeV0z0FQ"
+  },
+  "public_ipv4_usd_per_hour": 0.005,
+  "ipv4_source": "https://aws.amazon.com/vpc/pricing/"
+}

@@ -1,0 +1,87 @@
+{
+  "source_snapshot": "2026-11-24 local validated experiments; EC2 540-run work still in progress",
+  "exported_file_count": 400,
+  "raw_event_log_files_not_in_git": [
+    {
+      "path": "bigdata/experiments/clustering_benchmark/results/full-1-main-v2/spark-events/app-20261124073434-0000",
+      "bytes": 84495095,
+      "sha256": "4cb09ce4285dbdc67b992fa5257e473eb3074213d8724bb61bd10b1bf3d07882"
+    },
+    {
+      "path": "bigdata/experiments/clustering_benchmark/results/partition-mini-1-v3/spark-events/app-20261124081825-0000",
+      "bytes": 13347943,
+      "sha256": "0b00efa54041b4b9534ee962ef9560519e2fbe8ade5d86f72028926646563724"
+    },
+    {
+      "path": "bigdata/experiments/clustering_benchmark/results/partition-mini-2-v3/spark-events/app-20261124082051-0001",
+      "bytes": 13313478,
+      "sha256": "17c140657bb718bd6ed5253c11491a4180dec6357ef255ae9e5ee286965837e9"
+    },
+    {
+      "path": "bigdata/experiments/clustering_benchmark/results/partition-mini-4-v3/spark-events/app-20261124082233-0002",
+      "bytes": 14312907,
+      "sha256": "e553f7bca973843f9883649d7f2d41b6907c90109a2b1d99cbd5364185848dcf"
+    },
+    {
+      "path": "bigdata/experiments/clustering_benchmark/results/quick-4-parquet-v2/spark-events/app-20261124072701-0000",
+      "bytes": 19407513,
+      "sha256": "77d78810a5a5373d73516ca55cff9de168d7f95360be8ee5e36e0436323a476c"
+    },
+    {
+      "path": "bigdata/experiments/spark_partitioning/results/A-explore-deliberate-skew-v1/spark-events/app-20261124111852-0000",
+      "bytes": 4560397,
+      "sha256": "3b42438e10aba4607569ef68064f88bbc9c8dbe59aba43bc486aae7158853917"
+    },
+    {
+      "path": "bigdata/experiments/spark_partitioning/results/A-explore-v1/spark-events/app-20261124085111-0000",
+      "bytes": 8589345,
+      "sha256": "79eac8550b045fa9ea3b211b2e08593ddd29837d4a22e58136bba7171753f66a"
+    },
+    {
+      "path": "bigdata/experiments/spark_partitioning/results/A-explore-v2/spark-events/app-20261124101121-0000",
+      "bytes": 9058862,
+      "sha256": "567a1a878cb43a8df58820021150cadeff8713b3a657220f93b0a9e0e4a93d8c"
+    },
+    {
+      "path": "bigdata/experiments/spark_partitioning/results/A-quick-reliability-preflight-v1/spark-events/app-20261124115007-0000",
+      "bytes": 4744001,
+      "sha256": "e5af19f5e26aea9d0fed590f988704bcf44f8c1babd06735d3963a39d8700c19"
+    },
+    {
+      "path": "bigdata/experiments/spark_partitioning/results/A-quick-seeded-id-preflight-v1/spark-events/app-20261124120036-0000",
+      "bytes": 3595446,
+      "sha256": "da0d7c94bea57331b3561be44043909e366a821f106c1917be938703afc86eba"
+    },
+    {
+      "path": "bigdata/experiments/spark_partitioning/results/A-quick-v1/spark-events/app-20261124084425-0000",
+      "bytes": 4696296,
+      "sha256": "5308255b0c33d1b9cc4df8af071e3d70ef3127d5c3790d5c9da4c5fee65c0f6d"
+    },
+    {
+      "path": "bigdata/experiments/spark_partitioning/results/B-explore-deliberate-skew-v1/spark-events/app-20261124112340-0000",
+      "bytes": 4232410,
+      "sha256": "691359eb1a2c1ef4bb0347583c08ecf009fdd4eaaabc1cf7d2e60090ffbc8cef"
+    },
+    {
+      "path": "bigdata/experiments/spark_partitioning/results/B-explore-v3/spark-events/app-20261124104858-0000",
+      "bytes": 12542614,
+      "sha256": "00442039913ce156001e4193e348b265d620ac9b129d333b06d981f06f2274c0"
+    },
+    {
+      "path": "bigdata/experiments/spark_partitioning/results/B-quick-executor-cal-warm/spark-events/app-20261124104651-0000",
+      "bytes": 7284490,
+      "sha256": "9c105b351cff0539ded74765bddddfe932302895525a54dc8117378f282dd5c7"
+    },
+    {
+      "path": "bigdata/experiments/spark_partitioning/results/B-quick-reliability-preflight-v1/spark-events/app-20261124115441-0000",
+      "bytes": 6267027,
+      "sha256": "eab3ea20712f32d1b2a8b36d04e0b0a9611861c1ff8319b33bb2a1f83f8fefce"
+    },
+    {
+      "path": "bigdata/experiments/spark_partitioning/results/B-quick-seeded-id-preflight-v1/spark-events/app-20261124120232-0000",
+      "bytes": 4528016,
+      "sha256": "e5f6418acab235889501c14641b9c8a9a95f037e3643d4442e21d3cadd0f7aff"
+    }
+  ],
+  "note": "Full original CSV, Event Logs, runtime/credentials and live EC2 results stay in the local experiment directory. This index exposes no private key or AWS credential."
+}

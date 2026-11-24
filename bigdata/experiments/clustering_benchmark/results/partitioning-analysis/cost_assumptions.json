@@ -1,0 +1,82 @@
+{
+  "region": "ap-northeast-2",
+  "instance": "c7i.2xlarge",
+  "instances": 1,
+  "compute_usd_per_hour": 0.4032,
+  "ebs_gp3_gb": 100,
+  "ebs_gb_month_usd": 0.0912,
+  "ebs_month_hours_assumption": 720,
+  "public_ipv4": 1,
+  "total_budget_usd_per_hour": 0.42086666666666667,
+  "calibration_model": {
+    "kind": "nonnegative_quadratic_plus_linear_cpu",
+    "dimension": 768,
+    "cap": 2000,
+    "coefficients_quadratic_linear_constant": [
+      0.4282065470462029,
+      0.24940291712926874,
+      0.0045587560514764695
+    ],
+    "calibration_seeds": [
+      700100,
+      700101,
+      700110,
+      700111,
+      700120,
+      700121,
+      700130,
+      700131,
+      700140,
+      700141,
+      700150,
+      700151,
+      700160,
+      700161,
+      700170,
+      700171
+    ],
+    "test_data_used": false,
+    "training_sizes": [
+      25,
+      64,
+      128,
+      256,
+      512,
+      1024,
+      1600,
+      2000
+    ],
+    "training_cpu_medians_s": [
+      0.009064416999999936,
+      0.021641763500000022,
+      0.04314879299999996,
+      0.08992131650000001,
+      0.2552573790000001,
+      0.7213975390000003,
+      1.472556107,
+      2.2297777730000004
+    ],
+    "limitation": "Synthetic density only; includes existing HDBSCAN and Python postprocessing; not a complexity guarantee"
+  },
+  "mini_samples": 278,
+  "full_experiment_run": false,
+  "ec2_resources_created": false,
+  "execution_time_status": "Unvalidated local-model extrapolation, not an EC2 timing measurement",
+  "low_assumption": "one hour setup + 0.5 times modeled runtime",
+  "high_assumption": "one hour setup + 2 times modeled runtime + 30 percent repeat/fixture/analysis allowance",
+  "excluded_costs": [
+    "tax",
+    "currency conversion",
+    "NAT Gateway",
+    "paid CloudWatch logs",
+    "snapshots after deletion",
+    "cross-AZ data transfer",
+    "excess EBS IOPS/throughput",
+    "download beyond account data-transfer allowance"
+  ],
+  "mini_result_paths": [
+    "C:\\whatintheworld\\S15P21D203\\bigdata\\experiments\\clustering_benchmark\\results\\partition-mini-1-v3",
+    "C:\\whatintheworld\\S15P21D203\\bigdata\\experiments\\clustering_benchmark\\results\\partition-mini-2-v3",
+    "C:\\whatintheworld\\S15P21D203\\bigdata\\experiments\\clustering_benchmark\\results\\partition-mini-4-v3"
+  ]
+}

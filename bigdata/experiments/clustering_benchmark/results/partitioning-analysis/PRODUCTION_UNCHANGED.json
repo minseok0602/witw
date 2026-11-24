@@ -1,0 +1,8 @@
+{
+  "bigdata/spark/apps/issue_clustering.py": true,
+  "bigdata/spark/apps/unclassified_issue_stream.py": true,
+  "bigdata/spark/Dockerfile": true,
+  "bigdata/docker-compose.local.yml": true,
+  "bigdata/docker-compose.prod.yml": true,
+  "bigdata/nlp-worker/pipeline/classifier.py": true
+}

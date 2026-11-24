@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "measured_runs": 84,
+  "conditions": 42,
+  "repetitions_per_condition": 2,
+  "allocated_executor_cores": [
+    4
+  ],
+  "all_results_equal": true,
+  "resource_samples": {
+    "driver": 1542,
+    "worker": 1585
+  },
+  "calibration_holdout_disjoint": true,
+  "event_groups_complete": true,
+  "oversized_timed_tasks": 0
+}

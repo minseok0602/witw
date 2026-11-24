@@ -1,0 +1,50 @@
+{
+  "kind": "nonnegative_quadratic_plus_linear_cpu",
+  "dimension": 768,
+  "cap": 2000,
+  "coefficients_quadratic_linear_constant": [
+    0.4282065470462029,
+    0.24940291712926874,
+    0.0045587560514764695
+  ],
+  "calibration_seeds": [
+    700100,
+    700101,
+    700110,
+    700111,
+    700120,
+    700121,
+    700130,
+    700131,
+    700140,
+    700141,
+    700150,
+    700151,
+    700160,
+    700161,
+    700170,
+    700171
+  ],
+  "test_data_used": false,
+  "training_sizes": [
+    25,
+    64,
+    128,
+    256,
+    512,
+    1024,
+    1600,
+    2000
+  ],
+  "training_cpu_medians_s": [
+    0.009064416999999936,
+    0.021641763500000022,
+    0.04314879299999996,
+    0.08992131650000001,
+    0.2552573790000001,
+    0.7213975390000003,
+    1.472556107,
+    2.2297777730000004
+  ],
+  "limitation": "Synthetic density only; includes existing HDBSCAN and Python postprocessing; not a complexity guarantee"
+}

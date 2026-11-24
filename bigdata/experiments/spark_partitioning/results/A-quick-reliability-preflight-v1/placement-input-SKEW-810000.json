@@ -1,0 +1,48 @@
+{
+  "app": "A",
+  "scenario": "SKEW",
+  "seed": 810000,
+  "logical_input_sha256": "429e3406e7b301046b29856e37952f0cc8c797eeb60c2013f9cf09ec821733f5",
+  "theme_aliases": null,
+  "actual_initial_partition_theme_counts": [
+    [
+      0,
+      {
+        "5": 500,
+        "1": 500
+      }
+    ],
+    [
+      1,
+      {
+        "2": 500,
+        "6": 500
+      }
+    ],
+    [
+      2,
+      {
+        "3": 500,
+        "7": 500
+      }
+    ],
+    [
+      3,
+      {
+        "4": 500,
+        "8": 500
+      }
+    ]
+  ],
+  "forced_theme_partitions": [
+    "SKEW",
+    0
+  ],
+  "expected_a_candidate_comparisons": [
+    175000,
+    90000,
+    40000,
+    15000
+  ],
+  "expected_b_hash_articles": null
+}

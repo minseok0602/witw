@@ -1,0 +1,7 @@
+{
+  "status": "failed_preserved",
+  "include_in_primary_analysis": false,
+  "reason": "Both executors lost heartbeat after approximately 3826.6-second simultaneous resource-sampling gap; checkpoint blocks then unavailable",
+  "oom_kills": 0,
+  "not_deleted": true
+}

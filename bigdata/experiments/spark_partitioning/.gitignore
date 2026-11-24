@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.runtime/
+*.pem
+
+# Raw/live artifacts stay local; reviewed snapshots are explicitly tracked.
+results/
+.runtime/
+*.pem

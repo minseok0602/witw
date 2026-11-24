@@ -1,0 +1,58 @@
+name: witw-clustering-lab
+x-common: &common
+  image: witw-clustering-lab:local
+  pull_policy: never
+  user: root
+  networks: [lab]
+  volumes:
+    - .:/bench:ro
+    - ../../spark/apps:/source:ro
+    - lab-results:/results
+  environment: &env
+    OMP_NUM_THREADS: "1"
+    OPENBLAS_NUM_THREADS: "1"
+    MKL_NUM_THREADS: "1"
+    NUMEXPR_NUM_THREADS: "1"
+    BLIS_NUM_THREADS: "1"
+    PYTHONHASHSEED: "0"
+services:
+  master:
+    <<: *common
+    hostname: master
+    cpus: 0.5
+    mem_limit: 512m
+    command: [/opt/spark/bin/spark-class, org.apache.spark.deploy.master.Master, --host, master, --port, "7077"]
+    healthcheck:
+      test: [CMD, python3, -c, "import socket; socket.create_connection(('master',7077),2).close()"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  worker:
+    <<: *common
+    hostname: worker
+    cpus: ${LAB_CORES:-4}
+    mem_limit: 6g
+    environment:
+      <<: *env
+      SPARK_LOCAL_HOSTNAME: worker
+      SPARK_DAEMON_MEMORY: 256m
+    command: [python3, /bench/resource_monitor.py, --output, "/results/${LAB_RUN:-quick}/resources-worker.csv", --, /opt/spark/bin/spark-class, org.apache.spark.deploy.worker.Worker, spark://master:7077, --cores, "${LAB_CORES:-4}", --memory, 4g]
+    depends_on:
+      master: {condition: service_healthy}
+  driver:
+    <<: *common
+    hostname: driver
+    cpus: 1
+    mem_limit: 3g
+    environment:
+      <<: *env
+      SPARK_LOCAL_HOSTNAME: driver
+    entrypoint: [python3, /bench/resource_monitor.py, --output, "/results/${LAB_RUN:-quick}/resources-driver.csv", --]
+    command: [/opt/spark/bin/spark-submit, --master, "spark://master:7077", --driver-memory, 1536m, --executor-memory, 3g, --conf, "spark.cores.max=${LAB_CORES:-4}", --conf, "spark.executor.cores=${LAB_CORES:-4}", --conf, spark.driver.host=driver, --conf, spark.driver.bindAddress=0.0.0.0, --conf, spark.executor.processTreeMetrics.enabled=true, --conf, spark.executor.metrics.pollingInterval=250, --conf, spark.eventLog.logStageExecutorMetrics=true, /bench/benchmark.py, --source, /source, --cores, "${LAB_CORES:-4}", --output, "/results/${LAB_RUN:-quick}", --quick]
+    depends_on:
+      master: {condition: service_healthy}
+      worker: {condition: service_started}
+networks:
+  lab: {internal: true}
+volumes:
+  lab-results:

@@ -1,0 +1,9 @@
+{
+  "mode": "explore",
+  "inputs": [
+    "C:\\whatintheworld\\S15P21D203\\bigdata\\experiments\\spark_partitioning\\results\\A-explore-deliberate-skew-v1",
+    "C:\\whatintheworld\\S15P21D203\\bigdata\\experiments\\spark_partitioning\\results\\B-explore-deliberate-skew-v1"
+  ],
+  "rows": 18,
+  "performance_conclusions_allowed": false
+}

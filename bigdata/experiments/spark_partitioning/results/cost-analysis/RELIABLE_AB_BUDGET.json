@@ -1,0 +1,41 @@
+{
+  "scope": "A/B independent only, default hash plus moderate/severe task skew",
+  "main_runs": 540,
+  "sessions": 2,
+  "repetitions_per_condition_per_session": 15,
+  "local_runtime_planning_h": {
+    "default_hash_proxy": 0.5515173233879938,
+    "moderate_interpolated_assumption": 0.6261663620008363,
+    "severe_observed_extrapolation": 0.7008154006136789
+  },
+  "fixed_setup_quick_collection_h_assumption": 3,
+  "ec2_runtime_multiplier_scenarios": [
+    0.5,
+    2
+  ],
+  "estimated_hours": [
+    3.9392495430012544,
+    6.756998172005018
+  ],
+  "krw_per_hour": 786.5293333333335,
+  "estimated_infrastructure_krw": [
+    3098.3353168904155,
+    5314.57726756166
+  ],
+  "contingency_krw": 2000,
+  "estimated_with_contingency_krw": [
+    5098.335316890416,
+    7314.57726756166
+  ],
+  "proposed_budget_krw": 10000,
+  "proposed_auto_stop_total_running_hours": 10,
+  "ten_hour_cost_plus_contingency_krw": 9865.293333333335,
+  "ec2_executed": false,
+  "operating_distribution_representativeness_validated": false,
+  "exclusions": [
+    "integration C",
+    "operating business IO",
+    "external LLM costs"
+  ],
+  "note": "Moderate case and second-session timing are planning assumptions, not measurements. No guarantee of narrow confidence intervals or operational benefit."
+}

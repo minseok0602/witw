@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "app": "B",
+  "mode": "explore",
+  "measured_runs": 9,
+  "allocation": [
+    2,
+    2
+  ],
+  "target_stage_partitions": 4,
+  "all_results_equal": true,
+  "failed_tasks": 0,
+  "dynamic_routing": false,
+  "oversized_timed_task_warnings": 0,
+  "performance_conclusions_allowed": false
+}

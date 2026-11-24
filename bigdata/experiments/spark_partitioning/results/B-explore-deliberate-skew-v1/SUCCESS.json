@@ -1,0 +1,20 @@
+{
+  "complete": true,
+  "app": "B",
+  "mode": "explore",
+  "measured_runs": 9,
+  "equal": true,
+  "failures": 0,
+  "retries": 0,
+  "performance_conclusions_allowed": false,
+  "main_modes": [
+    "B0",
+    "B1",
+    "B2"
+  ],
+  "modes": [
+    "B0",
+    "B1",
+    "B2"
+  ]
+}
