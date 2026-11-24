@@ -31,14 +31,14 @@
     <td colspan="3" align="center"><img src="readme-assets/main.jpg" width="100%" alt="메인 화면 · 글로벌 동향"></td>
   </tr>
   <tr>
-    <th>글로벌 이슈 랭킹</th>
-    <th>국가별 논조 비교</th>
-    <th>국가별 핫이슈 랭킹</th>
+    <th width="33%">글로벌<br>이슈 랭킹</th>
+    <th width="33%">국가별<br>논조 비교</th>
+    <th width="33%">국가별<br>핫이슈 랭킹</th>
   </tr>
   <tr>
-    <td align="center"><img src="readme-assets/global-issue-ranking.jpg" width="300" alt="글로벌 이슈 랭킹"></td>
-    <td align="center"><img src="readme-assets/country-tone-comparison.jpg" width="300" alt="국가별 논조 비교"></td>
-    <td align="center"><img src="readme-assets/country-hot-issues.jpg" width="300" alt="국가별 핫이슈 랭킹"></td>
+    <td align="center"><img src="readme-assets/global-issue-ranking.jpg" width="100%" alt="글로벌 이슈 랭킹"></td>
+    <td align="center"><img src="readme-assets/country-tone-comparison.jpg" width="100%" alt="국가별 논조 비교"></td>
+    <td align="center"><img src="readme-assets/country-hot-issues.jpg" width="100%" alt="국가별 핫이슈 랭킹"></td>
   </tr>
 </table>
 
