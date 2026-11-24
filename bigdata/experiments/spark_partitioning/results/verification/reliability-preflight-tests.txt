@@ -1,0 +1,16 @@
+test_article_quotas_are_applied_without_collecting_article_ids (test_algorithms.PartitionContractTest) ... ok
+test_distribution_rotation_preserves_totals (test_algorithms.PartitionContractTest) ... ok
+test_original_tie_policy_zero_candidate_and_threshold (test_algorithms.PartitionContractTest) ... ok
+test_whole_theme_lpt_does_not_hash_destination_again (test_algorithms.PartitionContractTest) ... ok
+test_bootstrap_rejects_archive_traversal (test_infra_and_adapters.InfrastructureContractTest) ... ok
+test_budget_role_cannot_terminate_or_stop_unowned_resources (test_infra_and_adapters.InfrastructureContractTest) ... ok
+test_only_three_instances_same_subnet_and_only_head_public (test_infra_and_adapters.InfrastructureContractTest) ... ok
+test_stream_adapter_changes_only_compute_placement (test_infra_and_adapters.InfrastructureContractTest) ... ok
+test_clustering_retains_sizes_but_changes_hash_collisions (test_reliability_profiles.ReliabilityProfilesTest) ... ok
+test_matching_equal_counts_with_distinct_workload_skew (test_reliability_profiles.ReliabilityProfilesTest) ... ok
+test_watchdog_has_absolute_deadline_and_public_key_only (test_reliability_profiles.ReliabilityProfilesTest) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.063s
+
+OK

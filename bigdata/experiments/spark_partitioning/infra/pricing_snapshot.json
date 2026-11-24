@@ -1,0 +1,31 @@
+{
+  "retrieved_utc": "2026-11-24T08:34:24.334366+00:00",
+  "region": "ap-northeast-2",
+  "currency": "USD",
+  "sources": {
+    "ec2": "https://b0.p.awsstatic.com/pricing/2.0/meteredUnitMaps/ec2/USD/current/ec2.json",
+    "ebs": "https://b0.p.awsstatic.com/pricing/2.0/meteredUnitMaps/ec2/USD/current/ebs.json"
+  },
+  "publication": "2026-11-23T17:10:05Z",
+  "instances": {
+    "m7i.xlarge": {
+      "rateCode": "AFGD7C6YY6TQZHWM.JRTCKXETXF.6YS6EN2CT7",
+      "price": "0.2478000000",
+      "RegionlessRateCode": "d8Uw6IFXcEO_wk59rgf78HqNJuPokGt4PYhFDAsunnk"
+    },
+    "m7i.large": {
+      "rateCode": "UJJMFBN4RBJ2G2DD.JRTCKXETXF.6YS6EN2CT7",
+      "price": "0.1239000000",
+      "RegionlessRateCode": "dW3ZKREQ8jr-rAttQcA_w5XWjbrGBGD18NLZt6-sSp4"
+    }
+  },
+  "gp3": {
+    "rateCode": "MTK7D9SGKGYR3JD6.JRTCKXETXF.6YS6EN2CT7",
+    "price": "0.0912000000",
+    "RegionlessRateCode": "rfOvvXHDAJRZK8rCe8ThxmpU_7SjA3m6T5_yeV0z0FQ"
+  },
+  "public_ipv4_usd_h": 0.005,
+  "fx_budget_assumption_krw_per_usd": 1400,
+  "fx_note": "Budget assumption, not AWS billing FX; observed Wise around 1344 on 2026-11-24",
+  "fx_source": "https://wise.com/gb/currency-converter/usd-to-krw-rate/history"
+}

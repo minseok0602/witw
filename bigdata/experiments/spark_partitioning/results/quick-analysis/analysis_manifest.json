@@ -1,0 +1,9 @@
+{
+  "mode": "quick",
+  "inputs": [
+    "C:\\whatintheworld\\S15P21D203\\bigdata\\experiments\\spark_partitioning\\results\\A-quick-v1",
+    "C:\\whatintheworld\\S15P21D203\\bigdata\\experiments\\spark_partitioning\\results\\B-quick-executor-cal-warm"
+  ],
+  "rows": 32,
+  "performance_conclusions_allowed": false
+}

@@ -1,0 +1,64 @@
+{
+  "scope": "intentional-skew-only",
+  "region": "ap-northeast-2",
+  "repetitions_per_strategy": 30,
+  "main_measurements": 180,
+  "baseline_measurements": 0,
+  "ec2_quick_additional_measurements": 8,
+  "instances": {
+    "m7i.xlarge": 1,
+    "m7i.large": 2
+  },
+  "executor_cores": 4,
+  "partitions": 4,
+  "ec2_usd_h": 0.4956,
+  "ebs_usd_h": 0.010133333333333334,
+  "ipv4_usd_h": 0.005,
+  "total_usd_h": 0.5107333333333334,
+  "fx_assumption_krw_per_usd": 1400,
+  "vat_multiplier": 1.1,
+  "total_krw_h": 786.5293333333335,
+  "local_observations": [
+    {
+      "app": "A",
+      "source": "A-explore-deliberate-skew-v1",
+      "measured_gross_s": 274.1009647846222,
+      "fixed_startup_warmup_s": 46.31030344963074,
+      "three_repeat_variable_s": 227.79066133499146,
+      "projected30_local_s": 2324.2169167995453
+    },
+    {
+      "app": "B",
+      "source": "B-explore-deliberate-skew-v1",
+      "measured_gross_s": 44.962833404541016,
+      "fixed_startup_warmup_s": 27.878867626190186,
+      "three_repeat_variable_s": 17.08396577835083,
+      "projected30_local_s": 198.7185254096985
+    }
+  ],
+  "local_projected180_h": 0.7008154006136789,
+  "estimated_low_h": 1.5004077003068392,
+  "estimated_upper_h": 3.6516308012273577,
+  "estimated_low_krw": 1180.1146682505382,
+  "estimated_upper_krw": 3872.11473966882,
+  "contingency_krw": 1000,
+  "proposed_auto_stop_hours": 4,
+  "deadline_cost_plus_contingency_krw": 4146.117333333334,
+  "proposed_budget_krw": 5000,
+  "mini18_duration_h_scenario": [
+    1,
+    2
+  ],
+  "mini18_krw_with_contingency": [
+    786.5293333333335,
+    2573.058666666667
+  ],
+  "paid_resources_created": false,
+  "ec2_measured": false,
+  "exclusions": [
+    "original 720-run distribution matrix",
+    "240 extra Driver baselines",
+    "integration C"
+  ],
+  "note": "Planning scenarios, not guaranteed cost or runtime. Stop leaves EBS billed; collect and destroy the owned stack."
+}

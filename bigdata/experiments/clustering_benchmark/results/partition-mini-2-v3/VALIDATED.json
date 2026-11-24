@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "design": "partitioning-v3-mini",
+  "cores": 2,
+  "measured_runs": 90,
+  "all_results_equal": true,
+  "whole_theme_placement": true,
+  "actual_clustering_tasks_equal_partitions": true,
+  "allocated_executor_cores": [
+    2
+  ],
+  "independent_cost_calibration": true,
+  "resource_limits_verified": true,
+  "performance_conclusions_allowed": false,
+  "full_experiment_run": false
+}

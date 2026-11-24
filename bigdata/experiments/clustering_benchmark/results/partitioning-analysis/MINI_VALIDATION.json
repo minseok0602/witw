@@ -1,0 +1,78 @@
+{
+  "passed": true,
+  "measured_combinations": 278,
+  "clustering_tasks": 1512,
+  "core_conditions": [
+    1,
+    2,
+    4
+  ],
+  "partition_conditions": [
+    1,
+    2,
+    4,
+    8,
+    16
+  ],
+  "strategies": [
+    "as_is",
+    "control",
+    "to_be_1",
+    "to_be_2",
+    "to_be_3"
+  ],
+  "all_results_equal": true,
+  "full_experiment_run": false,
+  "ec2_resources_created": false,
+  "performance_conclusions_allowed": false,
+  "checks": [
+    {
+      "passed": true,
+      "design": "partitioning-v3-mini",
+      "cores": 1,
+      "measured_runs": 90,
+      "all_results_equal": true,
+      "whole_theme_placement": true,
+      "actual_clustering_tasks_equal_partitions": true,
+      "allocated_executor_cores": [
+        1
+      ],
+      "independent_cost_calibration": true,
+      "resource_limits_verified": true,
+      "performance_conclusions_allowed": false,
+      "full_experiment_run": false
+    },
+    {
+      "passed": true,
+      "design": "partitioning-v3-mini",
+      "cores": 2,
+      "measured_runs": 90,
+      "all_results_equal": true,
+      "whole_theme_placement": true,
+      "actual_clustering_tasks_equal_partitions": true,
+      "allocated_executor_cores": [
+        2
+      ],
+      "independent_cost_calibration": true,
+      "resource_limits_verified": true,
+      "performance_conclusions_allowed": false,
+      "full_experiment_run": false
+    },
+    {
+      "passed": true,
+      "design": "partitioning-v3-mini",
+      "cores": 4,
+      "measured_runs": 98,
+      "all_results_equal": true,
+      "whole_theme_placement": true,
+      "actual_clustering_tasks_equal_partitions": true,
+      "allocated_executor_cores": [
+        4
+      ],
+      "independent_cost_calibration": true,
+      "resource_limits_verified": true,
+      "performance_conclusions_allowed": false,
+      "full_experiment_run": false
+    }
+  ]
+}

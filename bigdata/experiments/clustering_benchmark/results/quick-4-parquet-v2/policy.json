@@ -1,0 +1,109 @@
+{
+  "features": [
+    "log_total",
+    "log_themes",
+    "log_max_theme",
+    "max_share"
+  ],
+  "calibration": [
+    {
+      "scenario": "tiny",
+      "counts": [
+        25,
+        25,
+        25,
+        25
+      ],
+      "medians": {
+        "as_is": 1.1354398930000116,
+        "control": 0.3544861224999636,
+        "to_be_1": 0.46804961349999985
+      }
+    },
+    {
+      "scenario": "balanced",
+      "counts": [
+        400,
+        400,
+        400,
+        400
+      ],
+      "medians": {
+        "as_is": 2.8692558555000005,
+        "control": 1.9698043449999432,
+        "to_be_1": 0.9222032844999717
+      }
+    },
+    {
+      "scenario": "skew",
+      "counts": [
+        1450,
+        50,
+        50,
+        50
+      ],
+      "medians": {
+        "as_is": 3.686877306499923,
+        "control": 2.924116371499963,
+        "to_be_1": 2.7953668380000067
+      }
+    },
+    {
+      "scenario": "single",
+      "counts": [
+        1600
+      ],
+      "medians": {
+        "as_is": 3.232786295999972,
+        "control": 3.283493098500003,
+        "to_be_1": 3.281042600000035
+      }
+    },
+    {
+      "scenario": "many",
+      "counts": [
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100,
+        100
+      ],
+      "medians": {
+        "as_is": 4.4062676805000365,
+        "control": 1.4911252090000175,
+        "to_be_1": 0.8922978035000142
+      }
+    },
+    {
+      "scenario": "large",
+      "counts": [
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000,
+        1000
+      ],
+      "medians": {
+        "as_is": 13.011022605499875,
+        "control": 11.905381462500088,
+        "to_be_1": 4.016124070000103
+      }
+    }
+  ],
+  "rule": "nearest standardized profile; executor only if >=10% faster than CONTROL",
+  "holdout_used": false
+}

@@ -1,0 +1,8 @@
+{
+  "design": "partitioning-v3-mini",
+  "complete": true,
+  "equal": true,
+  "measured_runs": 90,
+  "performance_conclusions_allowed": false,
+  "full_experiment_run": false
+}

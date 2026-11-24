@@ -1,0 +1,9 @@
+{
+  "mode": "explore",
+  "inputs": [
+    "C:\\whatintheworld\\S15P21D203\\bigdata\\experiments\\spark_partitioning\\results\\A-explore-v2",
+    "C:\\whatintheworld\\S15P21D203\\bigdata\\experiments\\spark_partitioning\\results\\B-explore-v3"
+  ],
+  "rows": 96,
+  "performance_conclusions_allowed": false
+}

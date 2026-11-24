@@ -1,0 +1,33 @@
+{
+  "stream_parameters": {
+    "ISSUE_CLUSTER_TRIGGER_COUNT": 25,
+    "ISSUE_CLUSTER_IMMEDIATE_RETRIGGER_COUNT": 25,
+    "ISSUE_CLUSTER_DELAYED_RETRIGGER_COUNT": 10,
+    "ISSUE_CLUSTER_DELAYED_RETRIGGER_MINUTES": 30,
+    "ISSUE_CLUSTER_MIN_SIZE": 8,
+    "ISSUE_CLUSTER_MIN_SAMPLES": 4,
+    "ISSUE_CLUSTER_MIN_MEMBER_CONFIDENCE": 0.8,
+    "ISSUE_CLUSTER_MIN_CENTROID_SIMILARITY": 0.92,
+    "ISSUE_CLUSTER_WINDOW_HOURS": 72,
+    "ISSUE_CLUSTER_ATTEMPT_TTL_HOURS": 72,
+    "ISSUE_CLUSTER_REPRESENTATIVE_COUNT": 4
+  },
+  "benchmark_parameters": {
+    "min_cluster_size": 8,
+    "min_samples": 4,
+    "representative_count": 4,
+    "min_membership_confidence": 0.8,
+    "min_centroid_similarity": 0.92
+  },
+  "parameters_equal": true,
+  "production_sha256": {
+    "bigdata/spark/apps/issue_clustering.py": "4f67961a5c4e873c92baa7df0c596ad641e50a66fbeeea7e73bf57a2c7835453",
+    "bigdata/spark/apps/unclassified_issue_stream.py": "66670dbe6dd00f140469c43e0a6fb88cc8152fa4eee0601955df431b2cf9f5d1",
+    "bigdata/spark/Dockerfile": "0af2c0610f580a4aa36c73835d52e1b89b0161cd3c5ed2db85d4dadb44da4b15",
+    "bigdata/docker-compose.local.yml": "cd4286a11f0806b1ff48681ed4a5a7ef359e15e8a1a5caedae85e81dcfe903f6",
+    "bigdata/docker-compose.prod.yml": "154691ad58868fb469ec2f0f4c3335ae46aac8774258c2210b1be7d3e2126d3d",
+    "bigdata/nlp-worker/pipeline/classifier.py": "4bc890e3cd4db036e247af5a0262f9be45117d3c6afc4052166e8e787bb60ad8"
+  },
+  "zip_sha256": "bb3599e4db3908fa1f8f91f48ccb9dc293cf334d851c00bc41dd67da90d561fc",
+  "note": "Existing uncommitted production changes are read as baseline; no production files modified by this experiment."
+}

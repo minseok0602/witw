@@ -1,0 +1,17 @@
+{
+  "unchanged_from_audit": true,
+  "files": {
+    "bigdata/spark/apps/enriched_article_stream.py": "9d6d4d2d9dd69bff16f5d5fc0ba706cc24a4534b4397f6b2131529a98b8de465",
+    "bigdata/spark/apps/unclassified_issue_stream.py": "66670dbe6dd00f140469c43e0a6fb88cc8152fa4eee0601955df431b2cf9f5d1",
+    "bigdata/spark/apps/issue_clustering.py": "4f67961a5c4e873c92baa7df0c596ad641e50a66fbeeea7e73bf57a2c7835453",
+    "bigdata/spark/apps/issue_matching.py": "bccd4f4de8c0f1621b90ffcc2e8b1b4e0bb4f01c88ab0b69944d1aa79381813e",
+    "bigdata/spark/apps/article_event.py": "b768d34c0baf5db9dba2468b3b5495a7afbb71f98d121bb7811e4b1e80bc3a18",
+    "bigdata/spark/apps/event_identity.py": "04d4da45616f9378d5e73fc96f32b705a612b403bb4d9059299251e1866d59ee",
+    "bigdata/spark/Dockerfile": "0af2c0610f580a4aa36c73835d52e1b89b0161cd3c5ed2db85d4dadb44da4b15",
+    "bigdata/docker-compose.prod.yml": "154691ad58868fb469ec2f0f4c3335ae46aac8774258c2210b1be7d3e2126d3d",
+    "bigdata/kafka/scripts/create-topics.sh": "07bf373014b51fc0afaeba8be3a926f87e981362707a8a353e4e468e85d1c477",
+    "bigdata/spark/conf/metrics.properties": "8e4194786187d881b59e092384a56119334c7c36c4a86d166b2caa387ccba4b7",
+    "bigdata/monitoring/prometheus/prometheus.yml": "c5234f85db8541326919a82f95ad7b9ed290b51f31ec519dd423de47ab0cba60",
+    "bigdata/nlp-worker/producer.py": "644a7ca26de8eafbd975e9537cda747f373a5fbb4b52a50644d6dd4ec67005ef"
+  }
+}
