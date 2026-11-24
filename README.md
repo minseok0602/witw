@@ -23,14 +23,24 @@
 
 ## 🖥 화면
 
-<p align="center">
-  <img src="readme-assets/main.jpg" width="820" alt="메인 화면 · 글로벌 동향">
-</p>
-
-| 글로벌 이슈 랭킹 | 국가별 논조 비교 | 국가별 핫이슈 랭킹 |
-| :---: | :---: | :---: |
-| <img src="readme-assets/global-issue-ranking.jpg" width="300" alt="글로벌 이슈 랭킹"> | <img src="readme-assets/country-tone-comparison.jpg" width="300" alt="국가별 논조 비교"> | <img src="readme-assets/country-hot-issues.jpg" width="300" alt="국가별 핫이슈 랭킹"> |
-| 47개국 기사를 이슈로 묶어 실시간 순위로 | 한 이슈를 나라마다 긍정·중립·부정으로 | 국가를 고르면 그 나라가 주목하는 이슈를 |
+<table>
+  <tr>
+    <th colspan="3">메인 화면 · 글로벌 동향</th>
+  </tr>
+  <tr>
+    <td colspan="3" align="center"><img src="readme-assets/main.jpg" width="100%" alt="메인 화면 · 글로벌 동향"></td>
+  </tr>
+  <tr>
+    <th>글로벌 이슈 랭킹</th>
+    <th>국가별 논조 비교</th>
+    <th>국가별 핫이슈 랭킹</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="readme-assets/global-issue-ranking.jpg" width="300" alt="글로벌 이슈 랭킹"></td>
+    <td align="center"><img src="readme-assets/country-tone-comparison.jpg" width="300" alt="국가별 논조 비교"></td>
+    <td align="center"><img src="readme-assets/country-hot-issues.jpg" width="300" alt="국가별 핫이슈 랭킹"></td>
+  </tr>
+</table>
 
 ## ✨ 주요 기능
 
